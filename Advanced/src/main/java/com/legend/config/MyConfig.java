@@ -2,25 +2,23 @@ package com.legend.config;
 
 import com.legend.entity.*;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.*;
+import org.springframework.stereotype.Controller;
 
 //配置类
 @Configuration
 // @Import({Apple.class,Banana.class})
 // @Import({Orange.class,MyImportSelector.class})
 // @Import({MyImportBeanDefinitionRegistrar.class})
-//@ComponentScan(value="com.yanqun",excludeFilters = {  @ComponentScan.Filter(type= FilterType.ANNOTATION,classes ={Controller.class} )}  )
-//@ComponentScan(value="com.yanqun",excludeFilters = {  @ComponentScan.Filter(type= FilterType.ANNOTATION,classes ={Controller.class} )}  )
-//@ComponentScan(value="com.yanqun",excludeFilters = {  @ComponentScan.Filter(type= FilterType.ASSIGNABLE_TYPE,classes ={StudentDao.class} )}  )
-//@ComponentScan(value="com.yanqun",includeFilters = {@ComponentScan.Filter(type= FilterType.ANNOTATION,classes ={Controller.class})},useDefaultFilters = false)
-//@ComponentScan(value="com.yanqun",includeFilters = {@ComponentScan.Filter(type= FilterType.CUSTOM,classes ={ MyFilter.class  })},useDefaultFilters = false)
-@ComponentScan(value= "com.legend")
+@ComponentScan(value="com.legend", excludeFilters = {  @ComponentScan.Filter(type= FilterType.ANNOTATION,classes ={Controller.class} )}  )
+//@ComponentScan(value="com.legend", excludeFilters = {  @ComponentScan.Filter(type= FilterType.ANNOTATION,classes ={Controller.class} )}  )
+//@ComponentScan(value="com.legend", excludeFilters = {  @ComponentScan.Filter(type= FilterType.ASSIGNABLE_TYPE,classes ={StudentDao.class} )}  )
+//@ComponentScan(value="com.legend", includeFilters = {@ComponentScan.Filter(type= FilterType.ANNOTATION,classes ={Controller.class})}, useDefaultFilters = false)
+//@ComponentScan(value="com.legend", includeFilters = {@ComponentScan.Filter(type= FilterType.CUSTOM,classes ={ MyFilter.class  })}, useDefaultFilters = false)//自定义扫描器MyFilter.class
+//@ComponentScan(value= "com.legend")//配置类替代xxx.xml文件扫描
 public class MyConfig {
         /*
-        <bean id="myaddress" class="com.yanqun.com.com.legend.entity.Address">
+        <bean id="myaddress" class="com.legend.entity.Address">
               <property name="homeAddrss" value="xa"></property>
               <property name="schoolAddrss" value="bj"></property>
         </bean>
@@ -50,14 +48,14 @@ public class MyConfig {
 //    }
 
 //    @Bean
-//    @Conditional(OilCarCondition.class)
+//    @Conditional(OilCarCondition.class)//满足此条件方能注册oilCarBean
 //    public Car oilCar()
 //    {
 //        return new OilCar() ;
 //    }
 //
 //    @Bean
-//    @Conditional(EnergyCarCondition.class)
+//    @Conditional(EnergyCarCondition.class)//满足此条件方能注册energyCarBean
 //    public Car energyCar()
 //    {
 //        return new EnergyCar() ;

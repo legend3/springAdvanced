@@ -1,4 +1,5 @@
 import com.legend.config.MyConfig;
+import com.legend.entity.Student;
 import com.legend.service.StudentService;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -9,8 +10,7 @@ public class TestStudent {
     public static void testXml()
     {
         //1.创建Spring的IOC容器对象
-        ApplicationContext context
-                = new ClassPathXmlApplicationContext("applicationContext.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
         //2.从IOC容器中获取Bean实例(id为"student"的Student对象)
         String[] beanDefinitionNames = context.getBeanDefinitionNames();
 //        for(String name :beanDefinitionNames){
@@ -19,13 +19,15 @@ public class TestStudent {
 //        Student stu1 =(Student)context.getBean("student");//setXxx()
 //        Student stu2 =(Student)context.getBean("student");//setXxx()
 //        System.out.println(stu1 ==stu2);
+        Student student = (Student) context.getBean("student");
+        System.out.println(student);//验证(Bean)init阶段进行了赋值
         ((ClassPathXmlApplicationContext) context).close();
 
     }
 
     public static void testAnnotation(){
         //注解方式
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext() ;
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         ConfigurableEnvironment environment = (ConfigurableEnvironment)context.getEnvironment();
         environment.setActiveProfiles("myApple");
 
@@ -53,18 +55,18 @@ public class TestStudent {
 //        for(String name :beanDefinitionNames){
 //            System.out.println(name);//name:id
 //        }
-//        Object obj = context.getBean("myFactoryBean");
-//        System.out.println(obj);
-//
-//        Object obj2 = context.getBean("&myFactoryBean");
-//        System.out.println(obj2);
+        Object obj = context.getBean("myFactoryBean");
+        System.out.println(obj);
+
+        Object obj2 = context.getBean("&myFactoryBean");
+        System.out.println(obj2);
 //        Student stu1 = (Student)context.getBean(Student.class) ;
 //        Student stu2 = (Student)context.getBean(Student.class) ;
 //        System.out.println(stu1==stu2);
         //Student stu = new Student();
 //        System.out.println(stu1);
-//        MyIntToStringConverter com.com.legend.converter=     (MyIntToStringConverter)context.getBean("myConverter") ;
-//        com.com.legend.converter.myConverter();;
+//        MyIntToStringConverter com.legend.converter=     (MyIntToStringConverter)context.getBean("myConverter") ;
+//        com.legend.converter.myConverter();;
         //创建一个事件 并且发布
 //        context.publishEvent(new ApplicationEvent("My Event"  ) {
 //         });

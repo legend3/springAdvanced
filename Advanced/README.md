@@ -1,86 +1,67 @@
-Spring IoC容器？
-两种形式：
-xml配置文件：applicationContext.xml
-存bean:  <bean id class>
-取bean:
-ApplicationContext context= new ClassPathXmlApplicationContext("applicationContext.xml");
-context.getBean();
+# Spring IoC容器？  
+## 两种形式：  
+1. xml配置文件：applicationContext.xml  
+   存bean:  <bean id class>  
+   取bean:  
+   ApplicationContext context= new ClassPathXmlApplicationContext("applicationContext.xml");     
+   context.getBean();    
 
-	注解：带有@Configuration注解的类（配置类）
-注意：两种形式获取的Ioc容器是 独立的
+2. 注解：带有@Configuration注解的类（配置类）    
+   存bean  
+   XXX  
+   取bean  
+   ApplicationContext context  = new AnnotationConfigApplicationContext(MyConfig.class);  
+   ### XXX:注解形式 给IoC容器中存放Bean：  
+   1. 必须有@Configuration注解（配置类）  
 
-	存bean
-		XXX
-	取bean
-ApplicationContext context  = new AnnotationConfigApplicationContext(MyConfig.class) ;
+   2. 形式: (注解形式两种都可以: 1.xml文件、2.ComponentScan)  
+      1. ①三层组件加入IOC容器： (两步: 给各类加注解 、 扫描器识别注解所在包)  
+         1. 给三层组件 分别加注解（@Controller、@Service、@Repository -> @Component(通用，分层不确切的情况)）   
+            1. 纳入ioc扫描器:  ①xml配置文件: <context:component-scan base-package="com.yanqun.controller"></context:component-scan>
+            2. 逻辑： 在三层类上加注解  ，让ioc识别，扫描器  
+         2. 将注解所在包 纳入ioc扫描器(ComponentScan)  
+            1. ②注解扫描器  
 
+component-scan：只对三层组件负责  
 
+给扫描器指定规则:   
+过滤类型：FilterType(ANNOTATION，ASSIGNABLE_TYPE，CUSTOM)  
 
-XXX:注解形式 给IoC容器中存放Bean：
-1.必须有@Configuration注解（配置类）
+>ANNOTATION（某一批标注了三层注解的类）：三层注解类型@Controller、@Service、@Repository -> @Component(无法判断规则时，等价通用)
 
-	2.形式：
-		①三层组件加入IOC容器： 给个各类加	注解 、 扫描器识别注解所在包
-			a.给三层组件 分别加注解（@Controller、@Service、@Repository -> @Component）
-			b.将注解所在包 纳入ioc扫描器（ComponentScan）
-				纳入ioc扫描器:  ①xml配置文件 :    <context:component-scan base-package="com.yanqun.controller"  >
-    </context:component-scan>
-	逻辑： 在三层类上加注解  ，让ioc识别，扫描器
-						②注解扫描器
-
-component-scan：只对三层组件负责
-
-给扫描器指定规则	：
-过滤类型：FilterType(ANNOTATION，ASSIGNABLE_TYPE，CUSTOM)
-
-	ANNOTATION：三层注解类型@Controller、@Service、@Repository -> @Component
-
-excludeFilters：排除
+excludeFilters：排除   
 includeFilters：有默认行为，可以通过useDefaultFilters = false禁止
+>ASSIGNABLE_TYPE（某一个标注了三层注解的类）：具体的类(StudentService.class)  
 
-	ASSIGNABLE_TYPE：具体的类(StudentService.class)
-区分:
-ANNOTATION:Controller.clss 指的是 所有标有@Controller的类
-ASSIGNABLE_TYPE：值得是具体的一个类 StudentController.class
+_区分:_  
+   ANNOTATION:Controller.clss 指的是 所有标有@Controller的类   
+   ASSIGNABLE_TYPE：值得是具体的一个类 StudentController.class   
 
-CUSTOM自定义：自己定义包含规则
-@ComponentScan.Filter(type= FilterType.CUSTOM ,value={MyFilter.class}
+>CUSTOM自定义：自己定义包含规则   
 
-MyFilter implements TypeFilter 重写其中的match，如果return true则加入IoC容器
+@ComponentScan.Filter(type= FilterType.CUSTOM ,value={MyFilter.class}   
 
+MyFilter implements TypeFilter 重写其中的match，如果return true则加入IoC容器   
 
+#### ②非三层组件(Student.class 、IntToStringConver.class):
+i.  @Bean+方法的返回值 ,id默認就是方法名（可以通过@Bean("stu") 修改id值）
+ii. import 、FactoryBean  
 
-
-		②非三层组件（Student.class 、IntToStringConver.class）：
-
-			i.  @Bean+方法的返回值 ,id默認就是方法名（可以通过@Bean("stu") 修改id值）
-			ii. import 、FactoryBean
-
-
-
-bean: 类  
-a.  非三层组件   ：Student\Teacher\配置信息  : @Bean
+**bean: 类**  
+a.  非三层组件   ：Student\Teacher\配置信息  : @Bean  
 b.  三层组件 ：Controller、Service、Dao  ：@Component(@Controller、@Service、@Repository)
 
 
-三层组件
-a.加入@Component等注解
-b.配置，让容器识别注解
-i.XML形式：通过扫描器  将@Component等注解所在包 扫描
-<context:component-scan base-package="com.yanqun" >
-
-    			</context:component-scan>
-			
-				
-		ii.注解
-			@Configuration
-@ComponentScan(value="com.yanqun")
-public class MyConfig {...}
-
-
-
-
-
+三层组件  
+a.加入@Component等注解  
+b.配置，让容器识别注解  
+i.XML形式：通过扫描器  将@Component等注解所在包 扫描  
+`<context:component-scan base-package="com.yanqun" >
+    			</context:component-scan>  
+		ii.注解  
+			@Configuration  
+@ComponentScan(value="com.yanqun")  
+public class MyConfig {...}`  
 
 component-scan指定规则：
 
@@ -100,65 +81,67 @@ b.MyFilter  implements TypeFilter   重写match()方法，如果返回值true
 
 
 
---bean的作用域
+### bean的作用域:  
 
-	scope:  singleton| prototype
+	scope:  singleton（默认）| prototype
 执行时机（产生bean的时机）：
-singleton：容器在初始化时，就会创建对象（唯一的一个）；以后再getBean时，不再产生新的bean。singleton也支持延迟加载（懒加载）：在第一次使用时产生。 @Lazy
-prototype：容器在初始化时，不创建对象；只是在每次使用时（每次从容器获取对象时 ，context.getBean(Xxxx)）,再创建对象;并且  每次getBean()都会创建一个新的对象。
+singleton：容器在初始化时，就会创建对象（唯一的一个）；以后再getBean时，不再产生新的bean。singleton也支持延迟加载（懒加载）：在第一次使用时产生。 @Lazy  
+prototype：容器在初始化时，不创建对象；只是在每次使用时（每次从容器获取对象时 ，context.getBean(Xxxx)）,再创建对象;并且  每次getBean()都会创建一个新的对象。  
 
 --条件注解 Spring Boot
-可以让某一个Bean 在某些条件下 加入Ioc容器，其他情况下不加IoC容器。
-a.准备 bean
-b.增加条件Bean：给每个Bean设置条件 ，必须实现Condition接口
-c.根据条件，加入IoC容器
+可以让某一个Bean 在某些条件下 加入Ioc容器，其他情况下不加IoC容器。  
+a.准备 bean  
+b.增加条件Bean：给每个Bean设置条件 ，必须实现Condition接口  
+c.根据条件，加入IoC容器  
 
---回顾给IoC加入Bean的方法
-注解 ：全部在@Congiration配置中设置：
-三层组件： 扫描器 + 三层注解
-非三层组件：  ① @Bean+返回值
-②@import
-③FactoryBean(工厂Bean)
+### 回顾给IoC加入Bean的方法  
+**注解 ：全部在@Congiration配置中设置：**  
+三层组件： 扫描器 + 三层注解  
+非三层组件：    
+            ①@Bean+返回值  
+            ②@import  
+            ③FactoryBean(工厂Bean)  
 
-@import使用：
-①直接编写到@Import中，并且id值 是全类名
-②自定义ImportSelector接口的实现类，通过selectimports方法实现（方法的返回值 就是要纳入IoC容器的Bean） 。 并且 告知程序 自己编写的实现类。 @Import({Orange.class,MyImportSelector.class})
-③编写ImportBeanDefinitionRegistrar接口的实现类，重写方法
-@Import({Orange.class,MyImportSelector.class，ImportBeanDefinitionRegistrar.class})
-
-
---FactoryBean(工厂Bean)
-1.准备bean。实现类和重写方法  2.注册bean。注册到@Bean中
-注意：需要通过&区分 获取的对象是哪一个 ： 不加&,获取的是最内部真实的Apple；
-如果加了&，获取的 是FacotryBean
-
---IoC容器：初始化容器、..使用容器、销毁容器
-
----Bean的生命周期：创建(new ...)、初始化（赋初值）、  ....、销毁	(servlet)
-方法一: Student.java
-适用于：@Bean+返回值方式
-init   destroy
-xml:
-init-method="myInit"  destroy-method="myDestroy"
-注解：
-@Bean(value="stu",initMethod = "myInit",destroyMethod = "myDestroy")
-
-IoC容器在初始化时，会自动创建对象(构造方法) ->init ->.....->当容器关闭时 调用destroy...
+2. @import使用：
+①直接编写到@Import中，并且id值 是全类名（com.legend.entity.Apple）   
+②自定义ImportSelector接口的实现类，通过selectimports方法实现（方法的返回值 就是要纳入IoC容器的Bean） 。 并且 告知程序 自己编写的实现类。 @Import({Orange.class,MyImportSelector.class})  
+③编写ImportBeanDefinitionRegistrar接口的实现类，重写方法  ctrl+alt+b 查看接口的实现类  
+@Import({Orange.class,MyImportSelector.class，ImportBeanDefinitionRegistrar.class})  
 
 
-方法二：
-三层注解 （功能性注解、MyIntToStringConverter.java）：@Controller、@Service、@Repository、@Component
+3. FactoryBean(工厂Bean)
+1.准备(工厂)bean。实现类和重写方法  2.注册bean。注册到@Bean中  
+注意：需要通过&区分 获取的对象是哪一个 ： 不加&,获取的是最内部真实的Apple；  
+如果加了&，获取的 是FacotryBean本身  
 
--->三层注解（功能性注解【三层、功能性类】）
-三层组件： 扫描器 + 三层注解（4个）
 
-	JAVA规范 ：JSR250
+>前提(区分):  IoC容器：初始化容器、..使用容器、销毁容器
+### Bean的生命周期：创建(new ...)、初始化（赋初值）、  ....、销毁	(servlet)
+>意义：我们可以在bean的xxx生命周期阶段干些什么！
+方法一: Student.java  
+适用于：@Bean+返回值方式  
+init   destroy  
+xml:  
+init-method="myInit"  destroy-method="myDestroy"  
+注解：  
+@Bean(value="stu",initMethod = "myInit",destroyMethod = "myDestroy")  
 
-	1.将响应组件 加入 @Component注解、 给初始化方法加@PostConstruct、给销毁方法加@PreDestroy
-	@PostConstruct：相当于方法一的init
-	@PreDestroy：相当于方法一的destroy
+IoC容器在初始化时，会自动创建对象(构造方法) ->init ->.....->当容器关闭时 调用destroy...  
 
-	如果要获取@Component注解中的bean，那么该Bean的名字就是@Component（value="xxx"）的value值
+
+方法二：  
+三层注解 （功能性注解、MyIntToStringConverter.java）：@Controller、@Service、@Repository、@Component  
+
+-->三层注解（功能性注解【三层、功能性类】）  
+三层组件： 扫描器 + 三层注解（4个）  
+
+	JAVA规范 ：JSR250  
+
+	1.将响应组件 加入 @Component注解、 给初始化方法加@PostConstruct、给销毁方法加@PreDestroy  
+	@PostConstruct：相当于方法一的init  
+	@PreDestroy：相当于方法一的destroy  
+
+	如果要获取@Component注解中的bean，那么该Bean的名字就是@Component（value="xxx"）的value值  
 
 方法三：两个接口
 接口：适用于三层组件（扫描器+三层组件）
@@ -303,8 +286,3 @@ b.发布事件
 context.publishEvent(自定义事件);
 
 颜群老师微信157468995
-
-
-
-
-
