@@ -6,9 +6,9 @@ import org.springframework.context.ApplicationListener;
 //监听器
 //@Component
 public class MyListener implements ApplicationListener {
-    //监听对象
+    //方式一(实现接口)：监听对象
     @Override
-    public void onApplicationEvent(ApplicationEvent event) {
+    public void onApplicationEvent(ApplicationEvent event) {//ctrl+alt+b查看ApplicationEvent的实现事件(能监听的事件)
         System.out.println("========**********========"+event+"======*********==========");
     }
 }

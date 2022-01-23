@@ -2,20 +2,23 @@ package com.legend.config;
 
 import com.legend.entity.*;
 import org.springframework.beans.factory.FactoryBean;
-import org.springframework.context.annotation.*;
-import org.springframework.stereotype.Controller;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 //配置类
 @Configuration
-// @Import({Apple.class,Banana.class})
-// @Import({Orange.class,MyImportSelector.class})
+// @Import({Apple.class, Banana.class})
+// @Import({Orange.class, MyImportSelector.class})
 // @Import({MyImportBeanDefinitionRegistrar.class})
-@ComponentScan(value="com.legend", excludeFilters = {  @ComponentScan.Filter(type= FilterType.ANNOTATION,classes ={Controller.class} )}  )
+//@ComponentScan(value="com.legend", excludeFilters = {  @ComponentScan.Filter(type= FilterType.ANNOTATION,classes ={Controller.class} )}  )
 //@ComponentScan(value="com.legend", excludeFilters = {  @ComponentScan.Filter(type= FilterType.ANNOTATION,classes ={Controller.class} )}  )
 //@ComponentScan(value="com.legend", excludeFilters = {  @ComponentScan.Filter(type= FilterType.ASSIGNABLE_TYPE,classes ={StudentDao.class} )}  )
 //@ComponentScan(value="com.legend", includeFilters = {@ComponentScan.Filter(type= FilterType.ANNOTATION,classes ={Controller.class})}, useDefaultFilters = false)
 //@ComponentScan(value="com.legend", includeFilters = {@ComponentScan.Filter(type= FilterType.CUSTOM,classes ={ MyFilter.class  })}, useDefaultFilters = false)//自定义扫描器MyFilter.class
-//@ComponentScan(value= "com.legend")//配置类替代xxx.xml文件扫描
+@ComponentScan(value= "com.legend")//配置类替代xxx.xml文件扫描
 public class MyConfig {
         /*
         <bean id="myaddress" class="com.legend.entity.Address">
@@ -24,11 +27,11 @@ public class MyConfig {
         </bean>
     */
 //   @Bean(value="stu",initMethod = "myInit",destroyMethod = "myDestroy")  //id="stu" class="...Student"
-   @Bean(value="stu")  //id="stu" class="...Student"
+   @Bean(value="stu")  //id="stu" class="...Student"//测试生命周期方法4,MyXxx类
 //   @Scope("singleton")
 //   @Lazy
 //   @Autowired
-    public Student myStudent(Address address){
+    public Student myStudent(@Autowired Address address) {
         Student student = new Student(10,"zs10",23);
 //        Address address = new Address("xa02","bj02") ;
      System.out.println("=================address:"+address);
@@ -73,10 +76,10 @@ public class MyConfig {
     public Fruit apple(){
        return new Apple() ;
     }
+
     @Profile("myBanana")
     @Bean("banana")
     public Fruit banana(){
         return new Banana() ;
     }
-
 }

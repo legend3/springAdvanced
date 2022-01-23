@@ -1,5 +1,3 @@
-package com.legend.test;
-
 import com.legend.job.PlanJob;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;

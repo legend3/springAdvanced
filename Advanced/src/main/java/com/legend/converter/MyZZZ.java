@@ -8,11 +8,14 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.stereotype.Component;
 
+/**
+ * BeanDefinitionRegistryPostProcessor拦截BeanDefination
+ */
 @Component
 public class MyZZZ implements BeanDefinitionRegistryPostProcessor {
 
 
-    //继承自BeanFactoryPostProcessor的方法    （bean的工厂）
+    //继承自BeanFactoryPostProcessor的方法（bean的工厂），但是，执行的实际、阶段不一样！
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
         System.out.println("【a后】postProcessBeanFactory:容器中注册的bean的数量:"+beanFactory.getBeanDefinitionCount());
@@ -23,7 +26,7 @@ public class MyZZZ implements BeanDefinitionRegistryPostProcessor {
 
 //    ApplicationListener，
 
-    //BeanDefinitionRegistryPostProcessor接口自己的方法  （维护着容器中所有bean的注册信息）
+    //BeanDefinitionRegistryPostProcessor接口自己的方法  （维护着容器中所有bean的注册信息(registry,容器的bean注册表)）
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
         System.out.println("【a先】postProcessBeanDefinitionRegistry:容器中注册的bean的数量:"+registry.getBeanDefinitionCount());
@@ -31,7 +34,7 @@ public class MyZZZ implements BeanDefinitionRegistryPostProcessor {
         //额外增加一个：postProcessBeanDefinitionRegistry （可以为容器 额外增加一些bean的注册）
         //Orange
         BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(Orange.class);//产生BeanDefinition
-//        beanDefinitionBuilder.getBeanDefinition();;//AbstractBeanDefinition
+//        beanDefinitionBuilder.getBeanDefinition();;//AbstractBeanDefinition是beanDefinition的子类
 
         registry.registerBeanDefinition("myBean", beanDefinitionBuilder.getBeanDefinition());
 

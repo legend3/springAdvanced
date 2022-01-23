@@ -4,7 +4,7 @@ public class Address {
     private String homeAddrss ;
     private String schoolAddrss ;
 
-    public Address(String homeAddrss, String schoolAddrss) {
+    public Address(String homeAddrss, String schoolAddrss) {//有有参构造方法，也可以
         this.homeAddrss = homeAddrss;
         this.schoolAddrss = schoolAddrss;
     }

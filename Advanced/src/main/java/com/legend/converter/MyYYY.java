@@ -7,6 +7,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
+/**
+ * BeanFactoryPostProcessor拦截的是容器,也就是bean实例化之前完成
+ */
 @Component
 public class MyYYY  implements BeanFactoryPostProcessor {
     @Override
@@ -15,7 +18,7 @@ public class MyYYY  implements BeanFactoryPostProcessor {
         int count = beanFactory.getBeanDefinitionCount();
         System.out.println("【b】&&&&&&&&&&&&&&容器中bean的个数："+count);
         String[] names = beanFactory.getBeanDefinitionNames();//name->id <bean id ="">
-        System.out.println("【b】&&&&&&&&&&&&&&容器中所有bean的名字：" +Arrays.asList( names  )   );
+        System.out.println("【b】&&&&&&&&&&&&&&容器中所有bean的名字：" + Arrays.asList(names));
 
 
     }

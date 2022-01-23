@@ -8,10 +8,11 @@
     <artifactId>springAdvanced</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>com.com.legend.Quartz</module>
-        <module>com.com.legend.Advanced</module>
-    </modules>
+<!--    <modules>-->
+<!--        <module>com.legend.Quartz</module>-->
+<!--        <module>com.legend.Advanced</module>-->
+<!--        <module>com.legend.SpringQuartzProject</module>-->
+<!--    </modules>-->
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>

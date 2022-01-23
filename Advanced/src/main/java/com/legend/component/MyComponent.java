@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 @Component("myComponent99999")  //id  name
 public class MyComponent implements ApplicationContextAware , BeanNameAware {
-        private ApplicationContext applicationContext;
-        private String beanName ;
+        private ApplicationContext applicationContext;//容器
+        private String beanName ;//设置bean的名字
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
         System.out.println("000000000000000000000000000000"+applicationContext);
@@ -18,7 +18,7 @@ public class MyComponent implements ApplicationContextAware , BeanNameAware {
 
     @Override
     public void setBeanName(String name) {
-        System.out.println("獲取當前bean的name"+name);
+        System.out.println("获取当前bean的name: "+name);
         this.beanName = name ;
     }
 }
