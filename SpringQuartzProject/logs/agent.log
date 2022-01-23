@@ -1,0 +1,17 @@
+2022-01-23 23:48:04,828 [INFO ] [main] StdSchedulerFactory: Using default implementation for ThreadExecutor
+2022-01-23 23:48:04,849 [INFO ] [main] SchedulerSignalerImpl: Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
+2022-01-23 23:48:04,849 [INFO ] [main] QuartzScheduler: Quartz Scheduler v.2.3.2 created.
+2022-01-23 23:48:04,850 [INFO ] [main] RAMJobStore: RAMJobStore initialized.
+2022-01-23 23:48:04,851 [INFO ] [main] QuartzScheduler: Scheduler meta-data: Quartz Scheduler (v2.3.2) 'schedulerFactoryBean' with instanceId 'NON_CLUSTERED'
+  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
+  NOT STARTED.
+  Currently in standby mode.
+  Number of jobs executed: 0
+  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 10 threads.
+  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
+
+2022-01-23 23:48:04,852 [INFO ] [main] StdSchedulerFactory: Quartz scheduler 'schedulerFactoryBean' initialized from an externally provided properties instance.
+2022-01-23 23:48:04,852 [INFO ] [main] StdSchedulerFactory: Quartz scheduler version: 2.3.2
+2022-01-23 23:48:04,853 [INFO ] [main] QuartzScheduler: JobFactory set to: org.springframework.scheduling.quartz.AdaptableJobFactory@2805c96b
+2022-01-23 23:48:04,862 [INFO ] [main] SchedulerFactoryBean: Starting Quartz Scheduler now
+2022-01-23 23:48:04,862 [INFO ] [main] QuartzScheduler: Scheduler schedulerFactoryBean_$_NON_CLUSTERED started.
