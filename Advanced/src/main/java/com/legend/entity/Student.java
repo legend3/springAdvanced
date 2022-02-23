@@ -23,9 +23,11 @@ public class Student {
         stuName="初始化zs" ;
         System.out.println("init...");
     }
+
     public void myDestroy(){
         System.out.println("destroy...");
     }
+
     public int getStuNo() {
         return stuNo;
     }
@@ -54,6 +56,10 @@ public class Student {
         return stuAge;
     }
 
+    public void setStuAge(int stuAge) {
+        this.stuAge = stuAge;
+    }
+
     @Override
     public String toString() {
         return "Student{" +
@@ -64,8 +70,6 @@ public class Student {
                 '}';
     }
 
-    public void setStuAge(int stuAge) {
-        this.stuAge = stuAge;
-    }
+
 
 }

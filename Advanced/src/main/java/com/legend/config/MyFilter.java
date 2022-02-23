@@ -9,17 +9,19 @@ import java.io.IOException;
 
 //自定义筛选
 public class MyFilter  implements TypeFilter {
-
-
     @Override
     public boolean match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory) throws IOException {
+        //补充：1. 对annotationMetadata中的对象添加入容器中
         AnnotationMetadata annotationMetadata = metadataReader.getAnnotationMetadata();
-        //扫描器扫描"org.legend"包中所有的类，getClassName()可以拿到该包中 所有(DAO三层注解)类的名字
+        //扫描器扫描"org.legend"包中所有的类，getClassName()可以拿到该包中 所有标有三层注解的类
         String className = annotationMetadata.getClassName();
-        //只过滤出与学校相关的三层组件
-        if(className.contains("School"))
-            return true ;
+//        System.out.println(className);
 
+        //只过滤出与学校相关的三层组件且将这些类加入IOC容器
+        if(className.contains("School")) {//补充：2. annotationMetadata中哪些要加入到IOC容器
+//            System.out.println("有School！");
+            return true;
+        }
         return false;
     }
 }

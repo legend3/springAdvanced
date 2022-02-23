@@ -2,36 +2,37 @@
 ## 两种形式：  
 1. xml配置文件：applicationContext.xml  
    存bean:  <bean id class>  
-   取bean:  
-   ApplicationContext context= new ClassPathXmlApplicationContext("applicationContext.xml");     
+   取bean: ApplicationContext context= new ClassPathXmlApplicationContext("applicationContext.xml");     
    context.getBean();    
-
+> 注意：两种形式获取的Ioc容器是互相独立的！  
 2. 注解：带有@Configuration注解的类（配置类）    
    存bean  
    XXX  
    取bean  
    ApplicationContext context  = new AnnotationConfigApplicationContext(MyConfig.class);  
+
    ### XXX:注解形式 给IoC容器中存放Bean：  
    1. 必须有@Configuration注解（配置类）  
 
-   2. 形式: (注解形式两种都可以: 1.xml文件、2.ComponentScan)  
-      1. ①三层组件加入IOC容器： (两步: 给各类加注解 、 扫描器识别注解所在包)  
+   2. 形式: (注解形式两种都可以: 1.xml文件、2.ComponentScan)   
+      1. ①**三层组件**加入IOC容器： (两步: 给各类加注解 、 扫描器识别注解所在包)   
          1. 给三层组件 分别加注解（@Controller、@Service、@Repository -> @Component(通用，分层不确切的情况)）   
-            1. 纳入ioc扫描器:  ①xml配置文件: <context:component-scan base-package="com.legend.controller"></context:component-scan>
+            1. 纳入ioc扫描器:  xml配置文件: <context:component-scan base-package="com.legend.controller"></context:component-scan>   
             2. 逻辑： 在三层类上加注解  ，让ioc识别，扫描器  
-         2. 将注解所在包 纳入ioc扫描器(ComponentScan)  
-            1. ②注解扫描器  
+         2. 将注解所在包 纳入ioc扫描器(ComponentScan)    
+            1. 注解扫描器  
 
 component-scan：只对三层组件负责  
 
 给扫描器指定规则:   
 过滤类型：FilterType(ANNOTATION，ASSIGNABLE_TYPE，CUSTOM)  
 
->ANNOTATION（某一批标注了三层注解的类）：三层注解类型@Controller、@Service、@Repository -> @Component(无法判断规则时，等价通用)
+>ANNOTATION（某一批标注了三层注解的类）：三层注解类型@Controller、@Service、@Repository -> @Component(无法判断规则时，等价通用)  
 
 excludeFilters：排除   
-includeFilters：有默认行为，可以通过useDefaultFilters = false禁止
->ASSIGNABLE_TYPE（某一个标注了三层注解的类）：具体的类(StudentService.class)  
+includeFilters：有默认行为，可以通过useDefaultFilters = false禁止  
+    1. value="com.legend"已经是包含com.legend包下所有的，默认useDefaultFilters为true, includeFilters再包含不会器作用；useDefaultFilters为true  
+>ASSIGNABLE_TYPE（某一个标注了三层注解的类）：具体的类(StudentService.class)   
 
 _区分:_  
    ANNOTATION:Controller.clss 指的是 所有标有@Controller的类   
@@ -43,8 +44,8 @@ _区分:_
 
 MyFilter implements TypeFilter 重写其中的match，如果return true则加入IoC容器   
 
-#### ②非三层组件(Student.class 、IntToStringConver.class):
-i.  @Bean+方法的返回值 ,id默認就是方法名（可以通过@Bean("stu") 修改id值）
+**②非三层组件**(Student.class 、IntToStringConver.class):  
+i.  @Bean+方法的返回值 ,id默认就是方法名（可以通过@Bean("stu") 修改id值）  
 ii. import 、FactoryBean  
 
 **bean: 类**  
@@ -70,14 +71,13 @@ ANNOTATION：指定类型 (@Compent @Controller  @Service  @Repository)
 ASSIGNABLE_TYPE :自定义类的类中选 StudentDao
 ASPECTJ,
 REGEX,
-CUSTOM：自定义形式  ：a.@ComponentScan.Filter(type= FilterType.CUSTOM,classes ={ MyFilter.class  })},useDefaultFilters = false)
-b.MyFilter  implements TypeFilter   重写match()方法，如果返回值true
+CUSTOM：自己定义包含规则
+a.@ComponentScan.Filter(type= FilterType.CUSTOM,classes ={ MyFilter.class  })}, useDefaultFilters = false)  
+b.MyFilter  implements TypeFilter   重写match()方法，如果return true则加入IoC容器  
 ---
 
 @Component(@Controller、@Service、@Repository)：三层组件
 非三层组件
-
----
 
 
 
@@ -89,7 +89,7 @@ b.MyFilter  implements TypeFilter   重写match()方法，如果返回值true
 singleton：容器在初始化时，就会创建对象（唯一的一个）；以后再getBean时，不再产生新的bean。singleton也支持延迟加载（懒加载）：在第一次使用时产生。 @Lazy  
 prototype：容器在初始化时，不创建对象；只是在每次使用时（每次从容器获取对象时 ，context.getBean(Xxxx)）,再创建对象;并且  每次getBean()都会创建一个新的对象。  
 
---条件注解 Spring Boot
+### 条件注解 Spring Boot
 可以让某一个Bean 在某些条件下 加入Ioc容器，其他情况下不加IoC容器。  
 a.准备 bean  
 b.增加条件Bean：给每个Bean设置条件 ，必须实现Condition接口  
@@ -286,4 +286,4 @@ a.自定义类 实现ApplicationEvent接口（自定义事件）
 b.发布事件
 context.publishEvent(自定义事件);
 
-颜群老师微信157468995
+颜群老师微信: 157468995

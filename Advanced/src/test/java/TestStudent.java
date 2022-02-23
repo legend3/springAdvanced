@@ -1,7 +1,6 @@
 import com.legend.config.MyConfig;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationEvent;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -28,13 +27,14 @@ public class TestStudent {
     public void testAnnotation()
     {
         //注解方式
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();//0.不在此保存！
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyConfig.class);
+//        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();//0.不在此保存！
         //切换环境激活二：
 //        ConfigurableEnvironment environment = (ConfigurableEnvironment)context.getEnvironment();
 //        environment.setActiveProfiles("myApple");//1.激活
 //            //保存点
-        context.register(MyConfig.class);//2.保存
-        context.refresh();//3.刷新(AnnotationConfigApplicationContext的无参构造了，必须使用refresh()手动刷新)
+//        context.register(MyConfig.class);//2.保存
+//        context.refresh();//3.刷新(AnnotationConfigApplicationContext的无参构造了，必须使用refresh()手动刷新)
 //
 //        //@Profile切换环境
 //        Object apple = context.getBean("apple");
@@ -55,10 +55,10 @@ public class TestStudent {
 //        Student stu =( Student)context.getBean("stu");
 //        System.out.println(stu);
 
-//        String[] beanDefinitionNames = context.getBeanDefinitionNames();
-//        for(String name :beanDefinitionNames){
-//            System.out.println(name);//name:id
-//        }
+        String[] beanDefinitionNames = context.getBeanDefinitionNames();
+        for(String name :beanDefinitionNames){
+            System.out.println("name: " + name);//name:id
+        }
 //        Object obj = context.getBean("myFactoryBean");
 //        System.out.println(obj);
 //
@@ -74,14 +74,14 @@ public class TestStudent {
 
         //自定义监听器：创建一个事件 并且发布
         //1.直接匿名实例化ApplicationEvent自定义事件
-        context.publishEvent(new ApplicationEvent("My Event") {
-         });
-        //2.创建一个自定义监听类(实现ApplicationEvent接口)
-        MyEvent3 evn =  new MyEvent3(context);
-        context.publishEvent(evn) ;
-
-
-        ((AnnotationConfigApplicationContext) context).close();
+//        context.publishEvent(new ApplicationEvent("My Event") {
+//         });
+//        //2.创建一个自定义监听类(实现ApplicationEvent接口)
+//        MyEvent3 evn =  new MyEvent3(context);
+//        context.publishEvent(evn) ;
+//
+//
+//        ((AnnotationConfigApplicationContext) context).close();
 
     }
 }

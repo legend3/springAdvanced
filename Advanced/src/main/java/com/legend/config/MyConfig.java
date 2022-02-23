@@ -3,21 +3,17 @@ package com.legend.config;
 import com.legend.entity.*;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.*;
 
 //配置类
 @Configuration
 // @Import({Apple.class, Banana.class})
 // @Import({Orange.class, MyImportSelector.class})
 // @Import({MyImportBeanDefinitionRegistrar.class})
-//@ComponentScan(value="com.legend", excludeFilters = {  @ComponentScan.Filter(type= FilterType.ANNOTATION,classes ={Controller.class} )}  )
-//@ComponentScan(value="com.legend", excludeFilters = {  @ComponentScan.Filter(type= FilterType.ANNOTATION,classes ={Controller.class} )}  )
-//@ComponentScan(value="com.legend", excludeFilters = {  @ComponentScan.Filter(type= FilterType.ASSIGNABLE_TYPE,classes ={StudentDao.class} )}  )
+//@ComponentScan(value="com.legend", excludeFilters = {@ComponentScan.Filter(type= FilterType.ANNOTATION,classes ={Controller.class})})
+//@ComponentScan(value="com.legend", excludeFilters = {@ComponentScan.Filter(type= FilterType.ASSIGNABLE_TYPE,classes ={StudentDao.class})})
 //@ComponentScan(value="com.legend", includeFilters = {@ComponentScan.Filter(type= FilterType.ANNOTATION,classes ={Controller.class})}, useDefaultFilters = false)
-//@ComponentScan(value="com.legend", includeFilters = {@ComponentScan.Filter(type= FilterType.CUSTOM,classes ={ MyFilter.class  })}, useDefaultFilters = false)//自定义扫描器MyFilter.class
+@ComponentScan(value="com.legend", includeFilters = {@ComponentScan.Filter(type= FilterType.CUSTOM, classes ={ MyFilter.class})}, useDefaultFilters = false)//自定义扫描器MyFilter.class
 @ComponentScan(value= "com.legend")//配置类替代xxx.xml文件扫描
 public class MyConfig {
         /*
@@ -39,9 +35,9 @@ public class MyConfig {
         return student;
     }
     @Bean
-    public Address address1(){
+    public Address address1() {
         Address address = new Address("xa02","bj02") ;
-        return address ;
+        return address;
     }
 
 //    @Bean
@@ -65,10 +61,8 @@ public class MyConfig {
 //    }
 
     @Bean
-    public FactoryBean<Apple> myFactoryBean(){
+    public FactoryBean<Apple> myFactoryBean() {
        return new MyFactoryBean();//到底是什么？MyFactoryBean 、Apple ？
-
-
     }
 
     @Profile("myApple")
@@ -79,7 +73,7 @@ public class MyConfig {
 
     @Profile("myBanana")
     @Bean("banana")
-    public Fruit banana(){
+    public Fruit banana() {
         return new Banana() ;
     }
 }
