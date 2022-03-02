@@ -12,6 +12,7 @@ public class Student {
     public Student() {
         System.out.println("student 无参构造");
     }
+
     public Student(int stuNo, String stuName, int stuAge) {
         this.stuNo = stuNo;
         this.stuName = stuName;
@@ -19,11 +20,12 @@ public class Student {
         System.out.println("student 有参构造");
     }
 
+    //容器初始化bean
     public void myInit(){
-        stuName="初始化zs" ;
-        System.out.println("init...");
+        stuName="初始化zs" ;//可以在容器初始化时就完成赋值
+        System.out.println("初始化方法myInit...");
     }
-
+    //容器关闭
     public void myDestroy(){
         System.out.println("destroy...");
     }
@@ -69,7 +71,4 @@ public class Student {
                 ", address=" + address +
                 '}';
     }
-
-
-
 }

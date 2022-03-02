@@ -14,6 +14,7 @@ public class MyImportSelector implements ImportSelector {
 
     @Override
     public Predicate<String> getExclusionFilter() {
-        return b -> b.contains("Apple");//对selectImports返回的String[]加一个过滤器，过滤调Apple(会返回一个java.lang.Object)
+        /*过滤*/
+        return b -> b.contains("Apple");//对selectImports返回的String[]加一个过滤器，过滤掉Apple(会返回一个java.lang.Object)
     }
 }

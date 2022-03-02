@@ -2,7 +2,6 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
-
        xsi:schemaLocation="http://www.springframework.org/schema/beans
       http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
     <!-- 框架在生成对象时，需要使用无参构造-->
@@ -30,8 +29,12 @@
 
 <!--@ComponentScan(value="com.legend",excludeFilters = {  @ComponentScan.Filter(type= FilterType.ASSIGNABLE_TYPE,classes ={StudentDao.class} )}  )-->
 
-    <context:component-scan base-package="com.legend" >
-            <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"  />
+    <!--  P1，自动扫描，纳入ioc扫描器, 配置文件形式  testXml()-->
+    <context:component-scan base-package="com.legend.controller,com.legend.dao" >
     </context:component-scan>
+
+<!--    <context:component-scan base-package="com.legend" >&lt;!&ndash;  在三层类上加注解，让ioc识别，扫描器  &ndash;&gt;-->
+<!--            <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"  />-->
+<!--    </context:component-scan>-->
 
 </beans>

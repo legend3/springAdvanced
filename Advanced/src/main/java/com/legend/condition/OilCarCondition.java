@@ -7,7 +7,7 @@ import org.springframework.core.type.AnnotatedTypeMetadata;
 /**
  * 注册OilCarBean的满足条件
  */
-public class OilCarCondition  implements Condition {
+public class OilCarCondition implements Condition {
     //如果当前环境是 oil，则加入 OilCar
     @Override
     public boolean matches(ConditionContext conditionContext, AnnotatedTypeMetadata annotatedTypeMetadata) {
@@ -16,7 +16,7 @@ public class OilCarCondition  implements Condition {
          */
         //获取环境（Environment不是必须的，只是本例利用环境作为判断条件！）
         Environment environment = conditionContext.getEnvironment();
-        String carType = environment.getProperty("car.type");//-Dcar.type=oil
+        String carType = environment.getProperty("car.type");//VM.options中添加： -Dcar.type=oil
         /**
          * 利用annotatedTypeMetadata获取类元信息作为判断条件
          */

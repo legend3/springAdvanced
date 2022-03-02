@@ -11,9 +11,11 @@ public class MyImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegi
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
 //        "com.legend.entity.Orange"
+        //将RootBeanDefinitionbean将Orange.class/com.legend.entity.Orange转换成的beanDefinition的类型，
 //        BeanDefinition beanDefinition =  new RootBeanDefinition(Orange.class) ;
         BeanDefinition beanDefinition =  new RootBeanDefinition("com.legend.entity.Orange") ;
-        //将RootBeanDefinitionbean转换成beanDefinition的类Orange.class/com.legend.entity.Orange注册入BeanDefinitionRegistry("bean定义注册",即容器中)中
+
+        // 注册入BeanDefinitionRegistry("bean定义注册",即容器中)中
         registry.registerBeanDefinition("myOrange",  beanDefinition); // id ,class
 
     }

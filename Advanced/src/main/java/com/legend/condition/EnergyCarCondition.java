@@ -12,7 +12,7 @@ public class EnergyCarCondition implements Condition {
 
         //获取环境
         Environment environment = conditionContext.getEnvironment();
-        String carType = environment.getProperty("car.type");//car.type="oil"
+        String carType = environment.getProperty("car.type");//VM.options中添加： car.type="energy"
         if(carType.contains("energy")){
             return true ;
         }

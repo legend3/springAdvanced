@@ -11,11 +11,11 @@ import java.io.IOException;
 public class MyFilter  implements TypeFilter {
     @Override
     public boolean match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory) throws IOException {
-        //补充：1. 对annotationMetadata中的对象添加入容器中
-        AnnotationMetadata annotationMetadata = metadataReader.getAnnotationMetadata();
+        //补充：1. （目的）对annotationMetadata中的对象添加入容器中
+        AnnotationMetadata annotationMetadata = metadataReader.getAnnotationMetadata();//读取底层类的完整注释元数据，包括注释方法的元数据，
         //扫描器扫描"org.legend"包中所有的类，getClassName()可以拿到该包中 所有标有三层注解的类
         String className = annotationMetadata.getClassName();
-//        System.out.println(className);
+//        System.out.println("className: " + className);
 
         //只过滤出与学校相关的三层组件且将这些类加入IOC容器
         if(className.contains("School")) {//补充：2. annotationMetadata中哪些要加入到IOC容器
