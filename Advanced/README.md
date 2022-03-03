@@ -236,14 +236,14 @@ b.重写其中的方法，都包含了一个对象(xxx容器的组件)。只需�
 
 
 -- 环境切换：@Profile  
-Spring:切换环境  
+Spring:切换(任何)环境  
 
 
 激活方式一：(idea Vm Options填写)  
 -Dspring.profiles.active=@Profile环境名  
 -Dspring.profiles.active=myApple  
 
-	(适用场合)数据库环境：  
+	(适用场合)数据库环境切换：  
 		@Profile  
 		127.0.0.1  scott  tiger    
 
@@ -257,9 +257,10 @@ Spring:切换环境
 
         ConfigurableEnvironment environment = (ConfigurableEnvironment)context.getEnvironment();  
         environment.setActiveProfiles("myBanana");  
-
+    
+    注：|代表保存点
 	其中AnnotationConfigApplicationContext中有一个refresh()操作：会将我们设置的一些参数还原  
-	没激活 |->进行激活 ->刷新 ->没激活  
+	没激活 | ->进行激活 ->刷新 ->没激活  
 
 
 	流程调整：  
@@ -273,33 +274,33 @@ IoC容器在使用时必须refresh() ;如果是有参构造，内部已经刷新
 
 ---Spring重要组件  
 接口BeanPostProcessor：拦截了所有中容器的Bean，并且可以进行bean的初始化 、销毁  
-创建->初始化->...-》销毁
-BeanPostProcessor：拦截所有bean
-BeanFactoryPostProcessor：拦截了容器
-BeanDefinitionRegistryPostProcessor：(BeanDefination)即将被加载之前（解析之前，称为BeanDefination对象之前）拦截BeanDefination
+创建->初始化->...-》销毁  
+BeanPostProcessor：拦截所有bean 
+BeanFactoryPostProcessor：拦截了容器  
+BeanDefinitionRegistryPostProcessor：(BeanDefination)即将被加载之前（解析之前，称为BeanDefination对象之前）拦截BeanDefination  
 
 
-BeanDefinitionRegistryPostProcessor(a)  -》加载bean->BeanFactoryPostProcessor(b)->实例化bean->BeanPostProcessor
-同一个方法 在不同地方（类、接口）的出现时机问题：a继承b，因此a中必然包含b中的方法(记c )：虽然a和b中都有c，但是 因此c出现的时机不同， 则c的执行顺序也不同： 如果是在a中出现，则先执行；如果是在b中执行 则后执行
+BeanDefinitionRegistryPostProcessor(a)  -》加载bean->BeanFactoryPostProcessor(b)->实例化bean->BeanPostProcessor  
+同一个方法 在不同地方（类、接口）的出现时机问题：a继承b，因此a中必然包含b中的方法(记c )：虽然a和b中都有c，但是 因此c出现的时机不同， 则c的执行顺序也不同： 如果是在a中出现，则先执行；如果是在b中执行 则后执行  
 
-在同一个地方（类、接口），的不同方法的出现时机问题
+在同一个地方（类、接口），的不同方法的出现时机问题  
 ![](pictures/bean加载时机.png)
 
 
-监听器：
-可以监听事件 ，监听的对象必须是 ApplicationEvent自身或其子类/子接口
-方式一：
-1必须实现ApplicationListener接口，
+监听器：  
+可以监听事件 ，监听的对象必须是 ApplicationEvent自身或其子类/子接口  
+方式一：  
+1必须实现ApplicationListener接口，  
 
 
-方式二：注解
+方式二：注解  
 
-(语法上 可以监听任意事件，但建议 ApplicationEvent自身或其子类/子接口)
-Spring：要让SPring识别自己，必须加入IOc容器（Bean+返回值| 注解+扫描器）
+(语法上 可以监听任意事件，但建议 ApplicationEvent自身或其子类/子接口)  
+Spring：要让SPring识别自己，必须加入IOc容器（Bean+返回值| 注解+扫描器）  
 
-自定被监听事件
-a.自定义类 实现ApplicationEvent接口（自定义事件）
-b.发布事件
-context.publishEvent(自定义事件);
+自定被监听事件  
+a.自定义类 实现ApplicationEvent接口（自定义事件）  
+b.发布事件  
+context.publishEvent(自定义事件);  
 
-颜群老师微信: 157468995
+颜群老师微信: 157468995  

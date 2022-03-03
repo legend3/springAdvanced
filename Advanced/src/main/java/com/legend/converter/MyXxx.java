@@ -6,12 +6,12 @@ import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Controller;
 
 /**
+ * P4 生命周期
  * BeanPostProcessor拦截的是所有的(容器中)bean，也就是在bean实例化之后完成
  * 顺序:      容器创建bean(构造方法)     postProcessBeforeInitialization初始化各bean     容器初始化bean
  */
 @Controller //(4个(三层组件))
 public class MyXxx implements BeanPostProcessor {
-
     //拦截器
     @Override//bean:Student(zs)
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {

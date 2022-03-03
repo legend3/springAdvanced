@@ -78,13 +78,14 @@ public class MyConfig {
        return new MyFactoryBean();//到底是什么？MyFactoryBean 、Apple ？
     }
 
-    @Profile("myApple")
+    /*P6 环境切换*/
+    @Profile("myApple")//一种环境
     @Bean("apple")
     public Fruit apple(){
        return new Apple() ;
     }
 
-    @Profile("myBanana")
+    @Profile("myBanana")//另一种环境
     @Bean("banana")
     public Fruit banana() {
         return new Banana() ;

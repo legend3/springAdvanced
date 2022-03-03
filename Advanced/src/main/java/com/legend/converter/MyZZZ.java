@@ -9,18 +9,18 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProce
 import org.springframework.stereotype.Component;
 
 /**
+ * P7-1
  * BeanDefinitionRegistryPostProcessor拦截BeanDefination
  */
 @Component
 public class MyZZZ implements BeanDefinitionRegistryPostProcessor {
 
-
-    //继承自BeanFactoryPostProcessor的方法（bean的工厂），但是，执行的实际、阶段不一样！
+    //继承自BeanFactoryPostProcessor的方法（bean的工厂），但是，执行的时机、阶段不一样！
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        System.out.println("【a后】postProcessBeanFactory:容器中注册的bean的数量:"+beanFactory.getBeanDefinitionCount());
-        Object myBean = beanFactory.getBean("myBean");
-        System.out.println( myBean.getClass().getName() );
+        System.out.println("【a继承BeanFactoryPostProcessor的方法，后执行】postProcessBeanFactory:容器中注册的bean的数量:"+beanFactory.getBeanDefinitionCount());
+        Object myBean = beanFactory.getBean("myBean");//验证：取一下Orange bean
+        System.out.println( myBean.getClass().getName());
 
     }
 
@@ -29,15 +29,17 @@ public class MyZZZ implements BeanDefinitionRegistryPostProcessor {
     //BeanDefinitionRegistryPostProcessor接口自己的方法  （维护着容器中所有bean的注册信息(registry,容器的bean注册表)）
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-        System.out.println("【a先】postProcessBeanDefinitionRegistry:容器中注册的bean的数量:"+registry.getBeanDefinitionCount());
+        System.out.println("【a自身方法，先执行】postProcessBeanDefinitionRegistry:容器中注册的bean的数量:"+registry.getBeanDefinitionCount());
 
-        //额外增加一个：postProcessBeanDefinitionRegistry （可以为容器 额外增加一些bean的注册）
+        /**
+         * 意义、作用、时机：
+         * 在bean(在容器中)注册之前，就可以额外增加一个：postProcessBeanDefinitionRegistry （可以为容器 额外增加一些bean的注册）
+         * */
         //Orange
-        BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(Orange.class);//产生BeanDefinition
-//        beanDefinitionBuilder.getBeanDefinition();;//AbstractBeanDefinition是beanDefinition的子类
+        // 产生一个BeanDefinition，通过BeanDefinition创建一个Orange的bean
+        BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(Orange.class);
+//        beanDefinitionBuilder.getBeanDefinition();//AbstractBeanDefinition是beanDefinition的子类
 
-        registry.registerBeanDefinition("myBean", beanDefinitionBuilder.getBeanDefinition());
-
-
+        registry.registerBeanDefinition("myBean", beanDefinitionBuilder.getBeanDefinition());//给Orange bean加上个id值
     }
 }

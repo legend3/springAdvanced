@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 public class TestCases {
     @Test
@@ -118,27 +119,30 @@ public class TestCases {
     }
     @Test
     public void test08() {
-        //实现调用spring底层组件
+        //P6实现调用spring底层组件
         ApplicationContext context = new AnnotationConfigApplicationContext(MyConfig.class);
         System.out.println(context+"——9999999999999999999");
     }
-//        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();//0.不在此保存！
-        //切换环境激活二：
-//        ConfigurableEnvironment environment = (ConfigurableEnvironment)context.getEnvironment();
-//        environment.setActiveProfiles("myApple");//1.激活
-//            //保存点
-//        context.register(MyConfig.class);//2.保存
-//        context.refresh();//3.刷新(AnnotationConfigApplicationContext的无参构造了，必须使用refresh()手动刷新)
-//
-//        //@Profile切换环境
-//        Object apple = context.getBean("apple");
-////        Object banana = context.getBean("banana");
-//        System.out.println("------------"+apple);
-////        System.out.println("------------"+banana);
-
-
-
-
+    @Test
+    public void test09() {
+        //P6 @Profile切换环境，激活方式一：idea Vm Options
+        ApplicationContext context = new AnnotationConfigApplicationContext(MyConfig.class);
+        Object apple = context.getBean("apple");
+//        Object banana = context.getBean("banana");
+        System.out.println("------myApple------"+apple);
+//        System.out.println("------myBanana------"+banana);
+    }
+    @Test
+    public void test10() {
+        //P6 @Profile切换环境，切换环境激活二：不配置idea Vm Options，而是硬编码方式切换环境
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();//0.不放参数(调的AnnotationConfigApplicationContext无参构造)，使容器不在此保存！
+        ConfigurableEnvironment environment = (ConfigurableEnvironment)context.getEnvironment();
+        environment.setActiveProfiles("myBanana");//1.激活
+//        Object banana = context.getBean("banana");//错误
+        //保存点
+        context.register(MyConfig.class);//2.激活(了环境参数)后保存(入容器)
+        context.refresh();//3.刷新(AnnotationConfigApplicationContext的无参构造了，必须使用refresh()手动刷新)
+    }
 
         //自定义监听器：创建一个事件 并且发布
         //1.直接匿名实例化ApplicationEvent自定义事件

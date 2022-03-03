@@ -8,10 +8,11 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 
 /**
- * BeanFactoryPostProcessor拦截的是容器,也就是bean实例化之前完成
+ * P7-1
+ * BeanFactoryPostProcessor拦截的对象是容器，(获取到了容器也就可以获取bean)
  */
 @Component
-public class MyYYY  implements BeanFactoryPostProcessor {
+public class MyYYY implements BeanFactoryPostProcessor {
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 //        beanFactory.getBeanDefinition("id");//根据bean的名字(id)获取bean

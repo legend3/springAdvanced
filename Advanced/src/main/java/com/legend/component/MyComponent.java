@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * P6 利用Spring底层组件进行开发
- * Aware的子接口(ApplicationContextAware, BeanNameAware)中都包含一个set方法(告诉我们该Aware子接口包含了容器的某一个组件(applicationContext,name))，
+ * Aware的子接口(ApplicationContextAware, BeanNameAware等等....)中都包含一个set方法(告诉我们该Aware子接口包含了容器的某一个组件(applicationContext,name))，
  * 如果要用这些组件，就能通过set方法传给成员属性，方便我们使用！
  *
  * */
@@ -18,10 +18,10 @@ public class MyComponent implements ApplicationContextAware, BeanNameAware {
     private String beanName;
 
     /**
-     * ——ApplicationContextAware接口的作用：
+     * ——ApplicationContextAware接口的作用：获取容器(AnnotationConfigApplicationContext new之前)
      *
-     * 容器会自动把applicationContext参数传入实现方法中，
-     * 再通过实现方法把applicationContext传给成员变量applicationContext()，
+     * 容器会自动把applicationContext参数传入重写方法中，
+     * 再通过重写方法把applicationContext传给成员变量applicationContext()，
      * 以后就能当作一个类的属性来使用“容器”。
      */
     @Override
