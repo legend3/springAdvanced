@@ -46,10 +46,9 @@
 
      **bean: 类**  
      a.  非三层组件   ：Student\Teacher\配置信息  : @Bean  
-     b.  三层组件 ：Controller、Service、Dao  ：@Component(@Controller、@Service、@Repository)  
+     b.  三层组件 ：Controller、Service、Dao  ：@Component(@Controller、@Service、@Repository)
 
-
-三层组件:  
+三层组件(总结):  
 a.加入@Component等注解  
 b.配置，让容器识别注解  
 
@@ -59,9 +58,7 @@ i.XML形式：通过扫描器  将@Component等注解所在包 扫描
 
     			</context:component-scan>  
 
-		ii.注解  
-
-			@Configuration  
+ii.注解：@Configuration  
 
 @ComponentScan(value="com.legend")  
 
@@ -93,13 +90,13 @@ b.MyFilter  implements TypeFilter   重写match()方法，如果return true则�
 
 
 
-### (P2)bean的作用域:   
+### P2 bean的作用域:   
 ![](pictures/Spring中Bean的作用域.png)  
 ![](pictures/作用域问题.png)  
 	scope:  singleton（默认）| prototype  
 执行时机（产生bean的时机）：  
-singleton：容器在初始化时，就会创建对象（唯一的一个）；以后再getBean时，不再产生新的bean。singleton也支持延迟加载（懒加载）：在第一次使用时产生。 @Lazy  
-prototype：容器在初始化时，不创建对象；只是在每次使用时（每次从容器获取对象时，context.getBean(Xxxx)）,再创建对象;并且  每次getBean()都会创建一个新的对象。  
+singleton: 容器在初始化时，就会创建对象（唯一的一个）；以后再getBean时，不再产生新的bean。singleton也支持延迟加载(懒加载): 在第一次使用时产生。 @Lazy  
+prototype: 容器在初始化时，不创建对象；只是在每次使用时（每次从容器获取对象时，context.getBean(Xxxx)）,再创建对象;并且  每次getBean()都会创建一个新的对象。  
 
 ### 条件注解 Spring Boot
 可以让某一个Bean 在某些条件下 加入Ioc容器，其他情况下不加IoC容器。  
@@ -116,7 +113,7 @@ c.根据条件，加入IoC容器  @Bean、@Conditional
             ③FactoryBean(工厂Bean)   
 
 
-(P3)  
+### P3  
 2. @import使用(三种使用方式)：  
 ①直接编写到@Import中，并且id值 是全类名（com.legend.entity.Apple）   
 ②自定义ImportSelector接口的实现类，通过selectimports方法实现（方法的返回值 就是要纳入IoC容器的Bean）。并且 告知程序 自己编写的实现类。 @Import({Orange.class, MyImportSelector.class})   
@@ -133,7 +130,7 @@ c.根据条件，加入IoC容器  @Bean、@Conditional
 
 
 >P4前提(区分):  IoC容器：初始化容器、..使用容器、销毁容器  
-### Bean的生命周期：创建(new ...)、初始化（赋初值）、  ....、销毁	(servlet)  
+### P4 Bean的生命周期：创建(new ...)、初始化（赋初值）、  ....、销毁	(servlet)  
 >意义：我们可以在bean的xxx生命周期阶段可以干些什么！  
    > 比如，获取后修改bean的属性值，对bean做进行操作  
 #### 方法一: Student.java   
@@ -178,7 +175,7 @@ DisposableBean接口销毁
 接口BeanPostProcessor：拦截了所有中容器的Bean  
 
 
-### 自动装配  : 三层组件(4个注册+扫描器)  
+### P5自动装配  : 三层组件(4个注册+扫描器)  
 @Autowired    
 Controller->Service->Dao  
 1. 三层组件  
@@ -222,7 +219,7 @@ public void setXxx(@Autowired xx xx)
     <version>1</version>  
 </dependency>`  
 
--- P6 利用Spring底层组件进行开发 (三层组件)  
+### P6 利用Spring底层组件进行开发 (三层组件)  
 >能够供我们使用的(xxx容器的)组件，都是Aware的子接口，即XxxxAware(包含了Xxx容器的组件！)  
 
 以ApplicationContextAware为例: 实现步骤  
@@ -272,33 +269,32 @@ IoC容器在使用时必须refresh() ;如果是有参构造，内部已经刷新
 > 激活方式三(空白)：xml文件形式的@Profile切换环境(idea提示)  
 
 
----Spring重要组件  
+### P7 Spring重要组件  
 接口BeanPostProcessor：拦截了所有中容器的Bean，并且可以进行bean的初始化 、销毁  
-创建->初始化->...-》销毁  
-BeanPostProcessor：拦截所有bean 
-BeanFactoryPostProcessor：拦截了容器  
-BeanDefinitionRegistryPostProcessor：(BeanDefination)即将被加载之前（解析之前，称为BeanDefination对象之前）拦截BeanDefination  
+创建->初始化->...->销毁    
+- BeanPostProcessor：拦截所有bean 
+- BeanFactoryPostProcessor：拦截了容器  
+- BeanDefinitionRegistryPostProcessor：(BeanDefination)即将被加载之前（解析之前，称为BeanDefination对象之前）拦截BeanDefination  
 
-
-BeanDefinitionRegistryPostProcessor(a)  -》加载bean->BeanFactoryPostProcessor(b)->实例化bean->BeanPostProcessor  
+BeanDefinitionRegistryPostProcessor(a)  ->加载bean->BeanFactoryPostProcessor(b)->实例化bean->BeanPostProcessor  
 同一个方法 在不同地方（类、接口）的出现时机问题：a继承b，因此a中必然包含b中的方法(记c )：虽然a和b中都有c，但是 因此c出现的时机不同， 则c的执行顺序也不同： 如果是在a中出现，则先执行；如果是在b中执行 则后执行  
 
 在同一个地方（类、接口），的不同方法的出现时机问题  
 ![](pictures/bean加载时机.png)
 
 
-监听器：  
-可以监听事件 ，监听的对象必须是 ApplicationEvent自身或其子类/子接口  
+### P8 监听器：  
+可以监听事件 ，监听的对象必须是 ApplicationEvent自身或其子类/子接口(内置只有6个)  
 方式一：  
-1必须实现ApplicationListener接口，  
+1必须实现ApplicationListener接口   
 
 
 方式二：注解  
-
-(语法上 可以监听任意事件，但建议 ApplicationEvent自身或其子类/子接口)  
-Spring：要让SPring识别自己，必须加入IOc容器（Bean+返回值| 注解+扫描器）  
+(语法上 可以监听任意事件{ApplicationEvent.class, xxxx.class,ApplicationEvent的自身或其子类/子接口.class}，但建议 ApplicationEvent自身或其子类/子接口)  
+Spring：要让Spring识别自己，必须加入IOc容器（Bean+返回值| 注解+扫描器）  
 
 自定被监听事件  
+前提：监听的对象必须是 ApplicationEvent自身或其子类/子接口，内置只有6个;所以根据自己需要自定义监控事件  
 a.自定义类 实现ApplicationEvent接口（自定义事件）  
 b.发布事件  
 context.publishEvent(自定义事件);  

@@ -4,10 +4,7 @@ import com.legend.entity.*;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.*;
 
 //配置类
 @Configuration
@@ -32,12 +29,13 @@ public class MyConfig {
         */
 /** 非三层组件(1) */
 //  @Bean //bean的id默认就是方法名：myStudent
-   @Bean(value="stu")//id="stu" class="...Student"//测试生命周期方法4,MyXxx类
-//   @Bean(value="stu",initMethod = "myInit",destroyMethod = "myDestroy")  //id="stu" class="...Student"
+//   @Bean(value="stu")//id="stu" class="...Student"//测试生命周期方法4,MyXxx类
+
+   @Bean(value="stu", initMethod = "myInit", destroyMethod = "myDestroy")  //id="stu" class="...Student"
 //   @Scope("prototype")
 
-//   @Scope("singleton")
-//   @Lazy
+   @Scope("singleton")
+   @Lazy
 
 //   @Autowired//（一）
     public Student myStudent(@Autowired @Qualifier("address2") Address address) {//（二）支持方法参数中注入：address=Address{homeAddrss='xa02', schoolAddrss='bj02'}；@Qualifier按照名字

@@ -9,13 +9,12 @@ import org.springframework.core.env.ConfigurableEnvironment;
 
 public class TestCases {
     @Test
-    public void testXml()
-    {
+    public void testXml() {
         //1.创建Spring的IOC容器对象
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
         //2.纳入IOC容器，配置文件形式 (id为"student"的Student对象)
         String[] beanDefinitionNames = context.getBeanDefinitionNames();
-        for(String name :beanDefinitionNames){
+        for (String name : beanDefinitionNames) {
             System.out.println(name);
         }
 //        Student stu1 =(Student)context.getBean("student");//setXxx()
@@ -26,6 +25,7 @@ public class TestCases {
 //        ((ClassPathXmlApplicationContext) context).close();
 
     }
+
     @Test
     public void test01() {
         //注解方式@Bean
@@ -34,23 +34,30 @@ public class TestCases {
         Student stu = (Student) context.getBean("stu");//@Bean(value="stu")
         System.out.println(stu);
     }
+
     @Test
     public void test02() {
         /** 注解扫描器 **/
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyConfig.class);
         String[] beanDefinitionNames = context.getBeanDefinitionNames();
-        for(String name :beanDefinitionNames){
+        for (String name : beanDefinitionNames) {
             System.out.println(name);
         }
     }
+
     @Test
     public void test03() {
         /** P2 作用域 */
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyConfig.class);//容器初始化
-//        Student stu1 = context.getBean(Student.class) ;
-//        Student stu2 = context.getBean(Student.class) ;
-//        System.out.println(stu1==stu2);
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyConfig.class);//容器初始化，自动触发调用myInit方法
+        //上述验证singleton时是否自动产生bean
+
+        //下面部分验证prototype作用域时是否每次新生成对象
+        Student stu1 = context.getBean(Student.class);
+        Student stu2 = context.getBean(Student.class);
+        System.out.println("两次生成bean是否相等: " + (stu1==stu2));
+        context.close();//关闭容器，自动触发调用myDestroy方法
     }
+
     @Test
     public void test04() {
         /** 条件注解 */
@@ -60,6 +67,7 @@ public class TestCases {
             System.out.println(name);
         }
     }
+
     @Test
     public void test05() {
         /** P3(先注释掉@Conditional的Bean)import注入方式 */
@@ -75,6 +83,7 @@ public class TestCases {
         Object obj2 = context.getBean("&F");//Apple
         System.out.println(obj2);
     }
+
     @Test
     public void test06() {
         /*P4 Bean的生命周期，xml方式*/
@@ -102,6 +111,7 @@ public class TestCases {
         /**/
         ((AnnotationConfigApplicationContext) context2).close();
     }
+
     @Test
     public void test07() {
         /*P5 三层注解的@Autowired*/
@@ -109,34 +119,37 @@ public class TestCases {
 //        StudentDao studentDao = (StudentDao) context.getBean("stuDao");//StudentDao为类时
 //        System.out.println(studentDao);//检测扫描三层组件
 
-        StudentService stuService = (StudentService)context.getBean("stuService");
+        StudentService stuService = (StudentService) context.getBean("stuService");
         System.out.println("stuServicez注入: " + stuService.getStudentDao());
-        System.out.println("*******8*8*8******"+ stuService.getStudentDao());
+        System.out.println("*******8*8*8******" + stuService.getStudentDao());
 
         //bean+返回值的@Autowired
-        Student stu =(Student)context.getBean("stu");
+        Student stu = (Student) context.getBean("stu");
         System.out.println("student注入" + stu);
     }
+
     @Test
     public void test08() {
         //P6实现调用spring底层组件
         ApplicationContext context = new AnnotationConfigApplicationContext(MyConfig.class);
-        System.out.println(context+"——9999999999999999999");
+        System.out.println(context + "——9999999999999999999");
     }
+
     @Test
     public void test09() {
         //P6 @Profile切换环境，激活方式一：idea Vm Options
         ApplicationContext context = new AnnotationConfigApplicationContext(MyConfig.class);
         Object apple = context.getBean("apple");
 //        Object banana = context.getBean("banana");
-        System.out.println("------myApple------"+apple);
+        System.out.println("------myApple------" + apple);
 //        System.out.println("------myBanana------"+banana);
     }
+
     @Test
     public void test10() {
         //P6 @Profile切换环境，切换环境激活二：不配置idea Vm Options，而是硬编码方式切换环境
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();//0.不放参数(调的AnnotationConfigApplicationContext无参构造)，使容器不在此保存！
-        ConfigurableEnvironment environment = (ConfigurableEnvironment)context.getEnvironment();
+        ConfigurableEnvironment environment = (ConfigurableEnvironment) context.getEnvironment();
         environment.setActiveProfiles("myBanana");//1.激活
 //        Object banana = context.getBean("banana");//错误
         //保存点
@@ -144,14 +157,19 @@ public class TestCases {
         context.refresh();//3.刷新(AnnotationConfigApplicationContext的无参构造了，必须使用refresh()手动刷新)
     }
 
-        //自定义监听器：创建一个事件 并且发布
+    @Test
+    public void test11() {
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyConfig.class);
+        //自定义监听器事件且发布：创建一个事件并且发布，两种实现形式：
+
         //1.直接匿名实例化ApplicationEvent自定义事件
 //        context.publishEvent(new ApplicationEvent("My Event") {
 //         });
-//        //2.创建一个自定义监听类(实现ApplicationEvent接口)
-//        MyEvent3 evn =  new MyEvent3(context);
-//        context.publishEvent(evn) ;
-//
-//
-//        ((AnnotationConfigApplicationContext) context).close();
+        //2.创建一个自定义监听类(实现ApplicationEvent接口)
+        MyEvent3 evn = new MyEvent3(context);
+        context.publishEvent(evn);//发布
+
+
+        ((AnnotationConfigApplicationContext) context).close();
+    }
 }

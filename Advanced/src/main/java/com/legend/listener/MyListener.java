@@ -4,7 +4,7 @@ import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ApplicationListener;
 
 //监听器
-//@Component
+//@Component    //为了演示2暂时注掉
 public class MyListener implements ApplicationListener {
     //方式一(实现接口)：监听对象
     @Override
