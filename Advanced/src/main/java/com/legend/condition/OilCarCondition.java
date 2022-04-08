@@ -14,11 +14,11 @@ public class OilCarCondition implements Condition {
         /**
          * 利用conditionContext上下文作为盘点条件
          */
-        //获取环境（Environment不是必须的，只是本例利用环境作为判断条件！）
+        //(一)获取环境（Environment不是必须的，只是本例利用环境作为判断条件！）
         Environment environment = conditionContext.getEnvironment();
         String carType = environment.getProperty("car.type");//VM.options中添加： -Dcar.type=oil
         /**
-         * 利用annotatedTypeMetadata获取类元信息作为判断条件
+         * (二)利用annotatedTypeMetadata获取类元信息作为判断条件
          */
         //Student student = new Student();
         //获取指定类(Student)的元信息,用于判断条件！

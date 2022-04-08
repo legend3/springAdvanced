@@ -63,8 +63,8 @@ public class TestCases {
         /** 条件注解 */
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyConfig.class);//容器初始化
         String[] beanDefinitionNames = context.getBeanDefinitionNames();
-        for (String name : beanDefinitionNames) {
-            System.out.println(name);
+        for (String name : beanDefinitionNames) {//遍历所有的bean
+            System.out.println("name: " + name);
         }
     }
 

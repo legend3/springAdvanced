@@ -9,7 +9,7 @@ public class MyImportSelector implements ImportSelector {
     @Override
     public String[] selectImports(AnnotationMetadata importingClassMetadata) {
 
-        return new String[]{"com.legend.entity.Apple","com.legend.entity.Banana"};  //返回值就是 要加入IOC容器的Bean的全类名
+        return new String[]{"com.legend.entity.Apple","com.legend.entity.Banana"};//返回值就是 要加入IOC容器的Bean的全类名
     }
 
     @Override

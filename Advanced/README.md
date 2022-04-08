@@ -104,21 +104,20 @@ c.根据条件，加入IoC容器  @Bean、@Conditional
 
 ### 回顾给IoC加入Bean的方法  
 **注解 ：全部在@Congiration配置中设置：**  
-三层组件： 扫描器 + 三层注解  
-非三层组件：  
+**三层组件**： 扫描器 + 三层注解  
+**非三层组件**：  
             ①@Bean+返回值  
             ②@Import  （Apple、Oracle Banana）  
             ③FactoryBean(工厂Bean)   
 
 ### P3  
-2. @import使用(三种使用方式)：  
-①直接编写到@Import中，并且id值 是全类名（com.legend.entity.Apple）   
-②自定义ImportSelector接口的实现类，通过selectimports方法实现（方法的返回值 就是要纳入IoC容器的Bean）。
-并且 告知程序 自己编写的实现类。 @Import({Orange.class, MyImportSelector.class})   
-③编写ImportBeanDefinitionRegistrar接口的实现类，重写方法  ctrl+alt+b 查看接口的实现类   
-@Import({Orange.class, MyImportSelector.class, ImportBeanDefinitionRegistrar.class})   
-
-
+2. @Import使用(三种使用方式)：
+   1. 直接编写到@Import中，并且id值 是全类名（com.legend.entity.Apple）  
+   2. 自定义ImportSelector接口的实现类，通过selectimports方法实现（方法的返回值 就是要纳入IoC容器的Bean）。  
+   并且 告知程序 自己编写的实现类。 @Import({Orange.class, MyImportSelector.class})  
+   3. 编写ImportBeanDefinitionRegistrar接口的实现类，重写方法  ctrl+alt+b 查看接口的实现类   
+   @Import({Orange.class, MyImportSelector.class, ImportBeanDefinitionRegistrar.class})   
+   
 3. FactoryBean(工厂Bean，与@Bean平级的)   
 1.准备(工厂)bean。实现类和重写方法   
 2.注册bean(myFactory类)。注册到@Bean中  
@@ -134,7 +133,7 @@ c.根据条件，加入IoC容器  @Bean、@Conditional
 >意义：我们可以在bean的xxx生命周期阶段可以干些什么！   
    > 比如，获取后修改bean的属性值，对bean做进行操作  
 #### 方法一: Student.java   
-适用于：@Bean+返回值方式  
+适用于：**@Bean+返回值方式**  
 init(自定义容器初始化阶段需要做什么， myInit())   destroy(自定义容器销毁阶段需要做什么，myDestroy())  
 ##### xml:  
 init-method="myInit"  destroy-method="myDestroy"  
@@ -172,11 +171,10 @@ DisposableBean接口销毁
 #### 方法四：（给容器中的**所有Bean加**初始化、销毁, "研究别人!"）一个接口   (案例: MyXxx类)  
 发生时机: 容器创建出bean, 容器初始化bean前  
 接口：适用于三层组件  
-接口BeanPostProcessor：拦截了所有容器中的Bean  
-
+接口BeanPostProcessor：拦截了所有容器中的Bean
 
 ### P5自动装配  : 三层组件(4个注册+扫描器)  
-@Autowired    
+@Autowired  
 Controller->Service->Dao  
 1. 三层组件  
 通过@Autowired从Ioc容器中 根据类型自动注入（没有调用setXxx()方法）  
@@ -184,15 +182,14 @@ Controller->Service->Dao
 - 不能放在方法的参数前！  
 `@Autowired  
 private Xxx xx;  
-public void aa()  
-{  
+public void aa() {  
 }  
 @Autowired  
 public void setXxx(xx xx)   
 {    
 }  
 `
-2. Bean+返回值：  
+2. Bean+返回值  
 - @Autowired(可以放)在方法的参数前（也可以省略）  
 - @Autowired放在方法前 （构造方法：特殊，如果只有一个有参构造方法，则构造方法前的@Autowired也可以省略）  
 `  
