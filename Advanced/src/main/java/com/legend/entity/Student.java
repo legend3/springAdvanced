@@ -8,9 +8,9 @@ public class Student {
     private int stuAge;
     private Address address ;
 
-    public Student() {
-        System.out.println("student 无参构造");
-    }
+//    public Student() {
+//        System.out.println("student 无参构造");
+//    }
 
     public Student(int stuNo, String stuName, int stuAge) {
         this.stuNo = stuNo;
@@ -19,9 +19,9 @@ public class Student {
         System.out.println("student 有参构造");
     }
 
-    //容器初始化bean方法
+    //P4 容器初始化bean(自定义方法)
     public void myInit(){
-        stuName="初始化zs";    //可以在容器初始化时就完成赋值
+        stuName="初始化zs";//可以在容器初始化时就完成赋值
         System.out.println("初始化方法myInit...");
     }
     //容器关闭方法

@@ -1,4 +1,5 @@
 import com.legend.config.MyConfig;
+import com.legend.converter.MyIntToStringConverter;
 import com.legend.entity.Student;
 import com.legend.service.StudentService;
 import org.junit.Test;
@@ -52,10 +53,9 @@ public class TestCases {
         //上述验证singleton时是否自动产生bean
 
         //下面部分验证prototype作用域时是否每次新生成对象
-        Student stu1 = context.getBean(Student.class);
-        Student stu2 = context.getBean(Student.class);
-        System.out.println("两次生成bean是否相等: " + (stu1==stu2));
-        context.close();//关闭容器，自动触发调用myDestroy方法
+//        Student stu1 = context.getBean(Student.class);
+//        Student stu2 = context.getBean(Student.class);
+//        System.out.println("两次生成bean是否相等: " + (stu1==stu2));
     }
 
     @Test
@@ -76,12 +76,12 @@ public class TestCases {
 //        for(String name :beanDefinitionNames){
 //            System.out.println(name);
 //        }
-        /** (先注释掉@Import的Bean)FactoryBean注入方式 */
-        Object obj = context.getBean("F");//MyFactoryBean
-        System.out.println(obj);
+        /** (先注释掉@Import的Bean) FactoryBean注入方式 */
+        Object obj = context.getBean("F");//Apple
+        System.out.println("F: " + obj);
 
-        Object obj2 = context.getBean("&F");//Apple
-        System.out.println(obj2);
+        Object obj2 = context.getBean("&F");//MyFactoryBean
+        System.out.println("&F: " + obj2);
     }
 
     @Test
@@ -92,24 +92,21 @@ public class TestCases {
 //        System.out.println(student);//验证(Bean)init阶段进行了赋值
 //        ((ClassPathXmlApplicationContext) context).close();
 
+        ApplicationContext context = new AnnotationConfigApplicationContext(MyConfig.class);
         /*Bean的生命周期，注解方式*/
-        ApplicationContext context2 = new AnnotationConfigApplicationContext(MyConfig.class);
-//        Student student2 = (Student) context2.getBean("stu");
-////        System.out.println(student2);
-//        ((AnnotationConfigApplicationContext) context2).close();
+//        Student student2 = (Student) context.getBean("stu");
+//        System.out.println(student2);
 
         /*Bean的生命周期，JAVA规范方式*/
-//        MyIntToStringConverter converter = (MyIntToStringConverter)context2.getBean("myConverter");
-//        converter.myConverter();
-//        ((AnnotationConfigApplicationContext) context2).close();
+        MyIntToStringConverter converter = (MyIntToStringConverter)context.getBean("myConverter");
+        converter.myConverter();
 
         /*实现两个接口*/
-//        MyFunction myFunction = (MyFunction) context2.getBean("myFunction");
+//        MyFunction myFunction = (MyFunction) context.getBean("myFunction");
 //        myFunction.myMethod();
-//        ((AnnotationConfigApplicationContext) context2).close();
 
         /**/
-        ((AnnotationConfigApplicationContext) context2).close();
+        ((AnnotationConfigApplicationContext) context).close();
     }
 
     @Test
@@ -168,7 +165,6 @@ public class TestCases {
         //2.创建一个自定义监听类(实现ApplicationEvent接口)
         MyEvent3 evn = new MyEvent3(context);
         context.publishEvent(evn);//发布
-
 
         ((AnnotationConfigApplicationContext) context).close();
     }

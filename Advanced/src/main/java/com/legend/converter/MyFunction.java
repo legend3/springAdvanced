@@ -4,9 +4,12 @@ import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
+/**
+ * P4（三层组件bean）Bean的生命周期方式三
+ */
 @Component(value = "myFunction")//@Bean + 返回值
 //@Lazy
-public class MyFunction implements InitializingBean , DisposableBean {
+public class MyFunction implements InitializingBean, DisposableBean {
     @Override
     public void afterPropertiesSet() throws Exception {
         System.out.println("MyFunction初始化...afterPropertiesSet");

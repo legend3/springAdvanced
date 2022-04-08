@@ -6,8 +6,9 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 /**
- * JAVA规范：生命周期演示
- * 功能性的bean！
+ *
+ * P4（三层组件bean） JAVA规范：生命周期演示
+ * 适合: 功能性的bean！
  */
 @Component(value="myConverter")//功能性注解属于三层注解！   @Bean + 返回值
 public class MyIntToStringConverter {
@@ -16,6 +17,7 @@ public class MyIntToStringConverter {
     public void init(){//方法名自定义
         System.out.println("转换..Init...");
     }
+
     public void myConverter(){
         System.out.println("转换.......");
     }

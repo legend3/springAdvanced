@@ -9,9 +9,9 @@ import org.springframework.context.annotation.*;
 //配置类
 @Configuration
 /** 非三层组件(2) */
-// @Import({Apple.class, Banana.class})//第一种方式
-// @Import({Orange.class, MyImportSelector.class})//第二种方式
-// @Import({MyImportBeanDefinitionRegistrar.class})//第三种方式
+// @Import({Apple.class, Banana.class})//第一种方式：直接编写到@Import中
+// @Import({Orange.class, MyImportSelector.class})//第二种方式：自定义ImportSelector接口的实现类
+// @Import({MyImportBeanDefinitionRegistrar.class})//第三种方式：编写ImportBeanDefinitionRegistrar接口的实现类
 
 /** 三层组件 */
 //@ComponentScan(value="com.legend", excludeFilters = {@ComponentScan.Filter(type= FilterType.ANNOTATION,classes ={Controller.class})})
@@ -29,13 +29,14 @@ public class MyConfig {
         */
 /** 非三层组件(1) */
 //  @Bean //bean的id默认就是方法名：myStudent
-//   @Bean(value="stu")//id="stu" class="...Student"//测试生命周期方法4,MyXxx类
+//   @Bean(value="stu")//id="stu" class="...Student"
 
-   @Bean(value="stu", initMethod = "myInit", destroyMethod = "myDestroy")  //id="stu" class="...Student"
+   /* P4-Bean的生命周期*/
+   @Bean(value="stu", initMethod = "myInit", destroyMethod = "myDestroy")  //id="stu" class="...Student"//测试生命周期方法4,MyXxx类
 //   @Scope("prototype")
 
-   @Scope("singleton")
-   @Lazy
+//   @Scope("singleton")
+//   @Lazy
 
 //   @Autowired//（一）
     public Student myStudent(@Autowired @Qualifier("address2") Address address) {//（二）支持方法参数中注入：address=Address{homeAddrss='xa02', schoolAddrss='bj02'}；@Qualifier按照名字
@@ -56,14 +57,14 @@ public class MyConfig {
         Address address = new Address("xa02","bj02");
         return address ;
     }
-//
+
 //    @Bean
 //    @Conditional(OilCarCondition.class)//OilCarCondition.class定义了满足的条件，方能注册oilCarBean
 //    public Car oilCar()
 //    {
 //        return new OilCar() ;
 //    }
-//
+
 //    @Bean
 //    @Conditional(EnergyCarCondition.class)//EnergyCarCondition.class定义了满足的条件，方能注册energyCarBean
 //    public Car energyCar()
@@ -73,7 +74,7 @@ public class MyConfig {
 /** 非三层组件(3) */
     @Bean(value = "F")
     public FactoryBean<Apple> myFactoryBean() {
-       return new MyFactoryBean();//到底是什么？MyFactoryBean 、Apple ？
+       return new MyFactoryBean();//到底是什么？MyFactoryBean 、Apple？
     }
 
     /*P6 环境切换*/
