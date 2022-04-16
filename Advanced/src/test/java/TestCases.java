@@ -70,7 +70,7 @@ public class TestCases {
 
     @Test
     public void test05() {
-        /** P3(先注释掉@Conditional的Bean)import注入方式 */
+        /** P3(先注释掉@Conditional的Bean,不然环境没有设置-Dcar.type=xxx会报错！)import注入方式 */
         AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(MyConfig.class);//容器初始化
 //        String[] beanDefinitionNames = context.getBeanDefinitionNames();
 //        for(String name :beanDefinitionNames){

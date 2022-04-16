@@ -1,5 +1,7 @@
 package com.legend.config;
 
+import com.legend.condition.EnergyCarCondition;
+import com.legend.condition.OilCarCondition;
 import com.legend.entity.*;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,19 +60,19 @@ public class MyConfig {
         return address ;
     }
 
-//    @Bean
-//    @Conditional(OilCarCondition.class)//OilCarCondition.class定义了满足的条件，方能注册oilCarBean
-//    public Car oilCar()
-//    {
-//        return new OilCar() ;
-//    }
+    @Bean
+    @Conditional(OilCarCondition.class)//OilCarCondition.class定义了满足的条件(-Dcar.type=oil)，方能注册oilCarBean
+    public Car oilCar()
+    {
+        return new OilCar() ;
+    }
 
-//    @Bean
-//    @Conditional(EnergyCarCondition.class)//EnergyCarCondition.class定义了满足的条件，方能注册energyCarBean
-//    public Car energyCar()
-//    {
-//        return new EnergyCar() ;
-//    }
+    @Bean
+    @Conditional(EnergyCarCondition.class)//EnergyCarCondition.class定义了满足的条件(-Dcar.type=energy)，方能注册energyCarBean
+    public Car energyCar()
+    {
+        return new EnergyCar() ;
+    }
 /** 非三层组件(3) */
     @Bean(value = "F")
     public FactoryBean<Apple> myFactoryBean() {
