@@ -169,17 +169,17 @@ DisposableBean接口销毁
 2. 如果是接口形式(方法三)，必须实现接口中**规定的方法**  
 
 #### 方法四：（给容器中的**所有Bean加**初始化、销毁, "研究别人!"）一个接口   (案例: MyXxx类)  
-发生时机: 容器创建出bean, 容器初始化bean前  
+发生时机: 容器创建出(实例化)bean后  
 接口：适用于三层组件  
-接口BeanPostProcessor：拦截了所有容器中的Bean
+接口BeanPostProcessor：拦截了所有容器中的Bean  
 
-### P5自动装配  : 三层组件(4个注册+扫描器)  
+### P5自动装配: 三层组件(4个注册+扫描器)  
 @Autowired  
 Controller->Service->Dao  
 1. 三层组件  
-通过@Autowired从Ioc容器中 根据类型自动注入（没有调用setXxx()方法）  
-- 如果@Autowired在属性前标注，则不调用setXxx(调用bean的set方法！)；如果标注在setXxx前面 ，则调用setXxx方法  
-- 不能放在方法的参数前！  
+通过@Autowired从Ioc容器中 根据类型自动注入（**没有调用setXxx()方法**）  
+- 如果@Autowired在属性前标注，则不调用setXxx(调用bean的set方法！)；如果标注在setXxx前面 ，则调用setXxx方法   
+- 不能放在set方法的参数前！  
 `@Autowired  
 private Xxx xx;  
 public void aa() {  
@@ -196,7 +196,7 @@ public void setXxx(xx xx)
 public void setXxx(@Autowired xx xx)  
 {  
 }  
-`
+`  
 
 之前：@Autowired 根据类型匹配：(案例: StudentService类)   
 三层注入方式/@Bean+返回值  

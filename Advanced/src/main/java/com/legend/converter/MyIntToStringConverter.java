@@ -7,10 +7,10 @@ import javax.annotation.PreDestroy;
 
 /**
  *
- * P4（三层组件bean） JAVA规范：生命周期演示
+ * P4（三层组件bean） JAVA规范：生命周期演示（bean本身）
  * 适合: 功能性的bean！
  */
-@Component(value="myConverter")//功能性注解属于三层注解！   @Bean + 返回值
+@Component(value="myConverter")//功能性注解属于三层注解！
 public class MyIntToStringConverter {
 
     @PostConstruct//相当于init()

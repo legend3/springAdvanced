@@ -1,9 +1,8 @@
 package com.legend.service;
 
 import com.legend.dao.StudentDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
 
 @Service("stuService")
 public class StudentService {
@@ -20,7 +19,7 @@ public class StudentService {
 //    @Resource(name="stuDao2")//按照名字找
 
     /*方式三*/
-    @Inject
+//    @Inject
     private StudentDao studentDao;
 
 //    @Autowired
@@ -33,8 +32,8 @@ public class StudentService {
 //    }
 //    @Qualifier("stuDao2")
 //    @Autowired//(二)
-    public void setStudentDao(StudentDao studentDao) {//(三)@Autowired: null
-        System.out.println("***************************111111-");
+    public void setStudentDao(@Autowired StudentDao studentDao) {  // (三)放入set方法参数中，@Autowired: null，三层注解不支持此方式
+        System.out.println("***************************111111-");   // (一)、(二)、(三)哪个会调用set方法的检查:    (二)调用
         this.studentDao = studentDao;
     }
 

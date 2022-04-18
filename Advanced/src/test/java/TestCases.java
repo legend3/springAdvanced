@@ -1,4 +1,5 @@
 import com.legend.config.MyConfig;
+import com.legend.converter.MyFunction;
 import com.legend.converter.MyIntToStringConverter;
 import com.legend.entity.Student;
 import com.legend.service.StudentService;
@@ -102,8 +103,8 @@ public class TestCases {
         converter.myConverter();
 
         /*实现两个接口*/
-//        MyFunction myFunction = (MyFunction) context.getBean("myFunction");
-//        myFunction.myMethod();
+        MyFunction myFunction = (MyFunction) context.getBean("myFunction");
+        myFunction.myMethod();
 
         /**/
         ((AnnotationConfigApplicationContext) context).close();
@@ -113,16 +114,21 @@ public class TestCases {
     public void test07() {
         /*P5 三层注解的@Autowired*/
         ApplicationContext context = new AnnotationConfigApplicationContext(MyConfig.class);
-//        StudentDao studentDao = (StudentDao) context.getBean("stuDao");//StudentDao为类时
-//        System.out.println(studentDao);//检测扫描三层组件
+
+        //无需硬编码格式set方法调用,而非自动注入进来
+//        StudentDao2 studentDao2 = (StudentDao2) context.getBean("stuDao22");//StudentDao为类时(而非接口)
+//        System.out.println(studentDao2);//检测扫描三层组件
+//        StudentService stuService = (StudentService) context.getBean("stuService");
+//        stuService.getStudentDao();
 
         StudentService stuService = (StudentService) context.getBean("stuService");
-        System.out.println("stuServicez注入: " + stuService.getStudentDao());
+        System.out.println("stuServicez注入: " + stuService.getStudentDao());//自动获取到StudentDao接口实例
         System.out.println("*******8*8*8******" + stuService.getStudentDao());
 
+
         //bean+返回值的@Autowired
-        Student stu = (Student) context.getBean("stu");
-        System.out.println("student注入" + stu);
+//        Student stu = (Student) context.getBean("stu");
+//        System.out.println("student注入" + stu);
     }
 
     @Test

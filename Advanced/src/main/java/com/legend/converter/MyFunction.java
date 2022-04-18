@@ -5,7 +5,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Component;
 
 /**
- * P4（三层组件bean）Bean的生命周期方式三
+ * P4（三层组件bean）Bean的生命周期方式三（bean本身）
  */
 @Component(value = "myFunction")//@Bean + 返回值
 //@Lazy
