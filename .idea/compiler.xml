@@ -9,6 +9,7 @@
         <module name="SpringQuartzProject" />
         <module name="QuartzProject" />
         <module name="Advanced" />
+        <module name="Quartz" />
       </profile>
     </annotationProcessing>
   </component>

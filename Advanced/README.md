@@ -111,22 +111,23 @@ c.根据条件，加入IoC容器  @Bean、@Conditional
             ③FactoryBean(工厂Bean)   
 
 ### P3  
-2. @Import使用(三种使用方式)：
+2. @Import使用(三种使用方式):  
    1. 直接编写到@Import中，并且id值 是全类名（com.legend.entity.Apple）  
    2. 自定义ImportSelector接口的实现类，通过selectimports方法实现（方法的返回值 就是要纳入IoC容器的Bean）。  
    并且 告知程序 自己编写的实现类。 @Import({Orange.class, MyImportSelector.class})  
    3. 编写ImportBeanDefinitionRegistrar接口的实现类，重写方法  ctrl+alt+b 查看接口的实现类   
-   @Import({Orange.class, MyImportSelector.class, ImportBeanDefinitionRegistrar.class})   
-   
+   @Import({Orange.class, MyImportSelector.class, ImportBeanDefinitionRegistrar.class})  
+
 3. FactoryBean(工厂Bean，与@Bean平级的)   
-1.准备(工厂)bean。实现类和重写方法   
+1.准备(工厂)bean——MyFactoryBean。实现FactoryBean类和重写方法   
 2.注册bean(myFactory类)。注册到@Bean中  
 (创建Bean对象时)注意：需要通过&区分 获取的对象是哪一个：  
 - 不加&,获取的是最内部真实的Apple(实现FactoryBean的真实对象)    
 - 如果加了&，获取的是FacotryBean本身(@Bean + 返回值)   
 
-> **非三层组件的注入方式各适合什么场景，有什么区别？**
-
+> 总结:   
+> 1.Import、工厂Bean如何设置作用域、生命周期？ 
+> 2.**非三层组件的注入方式各适合什么场景，有什么区别？**  
 
 >P4前提(区分):  IoC容器：初始化容器、..使用容器、销毁容器  
 ### P4 Bean的生命周期：创建(new ...)、初始化（赋初值）、  ....、销毁(servlet)  
@@ -142,12 +143,12 @@ init-method="myInit"  destroy-method="myDestroy"
 IoC容器在初始化时，会自动创建对象(构造方法) ->init ->.....->当容器关闭时 调用destroy...  
 
 #### 方法二：(案例：MyIntToStringConverter)  
-三层注解（功能性注解、MyIntToStringConverter.java）：@Controller、@Service、@Repository、@Component  
+三层注解（功能性注解、MyIntToStringConverter.java): @Controller、@Service、@Repository、@Component   
 
--->三层注解（(广义)功能性注解【三层、功能性类】）  
+-->三层注解((广义)功能性注解【三层、功能性类】)  
 三层组件： 扫描器 + 三层注解（4个）  
 
-	JAVA规范 ：JSR250  适用于三层组件(功能性！)  
+	**JAVA规**范(通用！): JSR250  适用于三层组件(功能性！)  ——
 	1.将响应组件 加入 @Component注解、给初始化方法加@PostConstruct、给销毁方法加@PreDestroy  
 	@PostConstruct：相当于方法一的init，标注方法名称自定义  
 	@PreDestroy：相当于方法一的destroy，标注方法名称自定义  
@@ -165,8 +166,9 @@ DisposableBean接口销毁
 >问题：  
 > 方法二、三都要在Spring IOC容器中操作：  
 > 操作方式 对象：Bean+返回，三层组件   
-1. 如果是注解形式(方法二)， 随便写一个方法(m名) ，然后加上相应注解即可  
+1. 如果是注解形式， 随便写一个方法(m名) ，然后加上相应注解即可  
 2. 如果是接口形式(方法三)，必须实现接口中**规定的方法**  
+3. 补充: 方法二通用！
 
 #### 方法四：（给容器中的**所有Bean加**初始化、销毁, "研究别人!"）一个接口   (案例: MyXxx类)  
 发生时机: 容器创建出(实例化)bean后  
@@ -174,10 +176,10 @@ DisposableBean接口销毁
 接口BeanPostProcessor：拦截了所有容器中的Bean  
 
 ### P5自动装配: 三层组件(4个注册+扫描器)  
-@Autowired  
+@Autowired(只适用于引用类型ref类型)  
 Controller->Service->Dao  
 1. 三层组件  
-通过@Autowired从Ioc容器中 根据类型自动注入（**没有调用setXxx()方法**）  
+通过@Autowired从Ioc容器中**根据类型**自动注入(**没有调用setXxx()方法**)  
 - 如果@Autowired在属性前标注，则不调用setXxx(调用bean的set方法！)；如果标注在setXxx前面 ，则调用setXxx方法   
 - 不能放在set方法的参数前！  
 `@Autowired  
@@ -185,13 +187,13 @@ private Xxx xx;
 public void aa() {  
 }  
 @Autowired  
-public void setXxx(xx xx)   
+public void setXxx(xx xx)  
 {    
 }  
-`
+`  
 2. Bean+返回值  
 - @Autowired(可以放)在方法的参数前（也可以省略）  
-- @Autowired放在方法前 （构造方法：特殊，如果只有一个有参构造方法，则构造方法前的@Autowired也可以省略）  
+- @Autowired放在方法前(构造方法：特殊，如果只有一个有参构造方法，则构造方法前的@Autowired也可以省略)  
 `  
 public void setXxx(@Autowired xx xx)  
 {  
@@ -226,14 +228,14 @@ b.重写其中的方法，都包含了一个对象(xxx容器的组件)。只需�
 	有什么用：例如ApplicationContextAware，可以通过该接口获取到Ioc容器对象。  
 	执行时间：	如果在main()中new Ioc容器： 先执行ApplicationContextAware实现类中的方法，通过该方法传入IoC容器供我们自己使用；  然后再将该容器通过（main()中）的new返回给用户  
 
-	BeanNameAware：  
+	BeanNameAware:  
 
 
 -- 环境切换：@Profile  
 Spring:切换(任何)环境  
 
 
-激活方式一：(idea Vm Options填写)  
+激活方式一：@Profile + (idea Vm Options填写)  
 -Dspring.profiles.active=@Profile环境名  
 -Dspring.profiles.active=myApple  
 
@@ -243,12 +245,14 @@ Spring:切换(任何)环境
 
 		@Profile  
 		192.168...  
-激活方式二：  
+激活方式二:  
 硬编码  
 
 	坑：错误写法  
-			        ApplicationContext context = new AnnotationConfigApplicationContext(MyConfig.class);  
+    ApplicationContext context = new AnnotationConfigApplicationContext(MyConfig.class);   
 
+        //不放参数(调的AnnotationConfigApplicationContext无参构造)，使容器不在此保存！  
+        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
         ConfigurableEnvironment environment = (ConfigurableEnvironment)context.getEnvironment();  
         environment.setActiveProfiles("myBanana");  
     
@@ -273,22 +277,22 @@ IoC容器在使用时必须refresh() ;如果是有参构造，内部已经刷新
 - BeanFactoryPostProcessor：拦截了容器  
 - BeanDefinitionRegistryPostProcessor：(BeanDefination)即将被加载之前（解析之前，称为BeanDefination对象之前）拦截BeanDefination  
 
-BeanDefinitionRegistryPostProcessor(a)  ->加载bean->BeanFactoryPostProcessor(b)->实例化bean->BeanPostProcessor  
+BeanDefinitionRegistryPostProcessor(a)  -> 加载bean->BeanFactoryPostProcessor(b) -> 实例化bean->BeanPostProcessor  
 同一个方法 在不同地方（类、接口）的出现时机问题：a继承b，因此a中必然包含b中的方法(记c )：虽然a和b中都有c，但是 因此c出现的时机不同， 则c的执行顺序也不同： 如果是在a中出现，则先执行；如果是在b中执行 则后执行  
 
 在同一个地方（类、接口），的不同方法的出现时机问题  
 ![](pictures/bean加载时机.png)
 
 
-### P8 监听器：  
-可以监听事件 ，监听的对象必须是 ApplicationEvent自身或其子类/子接口(内置只有6个)  
-方式一：  
-1必须实现ApplicationListener接口   
+### P8 监听器:  
+Spring：要让Spring识别自己，必须(将监听器)加入Ioc容器（Bean+返回值| 注解+扫描器）
 
+1. 监听器(方式一):  
+- 必须实现ApplicationListener接口   
+2. 可以监听事件 ，监听的对象必须是 ApplicationEvent自身或其子类/子接口(内置只有6个)
 
 方式二：注解  
 (语法上 可以监听任意事件{ApplicationEvent.class, xxxx.class,ApplicationEvent的自身或其子类/子接口.class}，但建议 ApplicationEvent自身或其子类/子接口)  
-Spring：要让Spring识别自己，必须加入IOc容器（Bean+返回值| 注解+扫描器）  
 
 自定被监听事件  
 前提：监听的对象必须是 ApplicationEvent自身或其子类/子接口，内置只有6个;所以根据自己需要自定义监控事件  

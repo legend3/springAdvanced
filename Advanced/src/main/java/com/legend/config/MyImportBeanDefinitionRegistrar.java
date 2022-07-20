@@ -9,13 +9,16 @@ import org.springframework.core.type.AnnotationMetadata;
 public class MyImportBeanDefinitionRegistrar implements ImportBeanDefinitionRegistrar {
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
-//        "com.legend.entity.Orange"
-        //RootBeanDefinitionbean将Orange.class/com.legend.entity.Orange转换成的beanDefinition的类型，
-//        BeanDefinition beanDefinition =  new RootBeanDefinition(Orange.class) ;
-        BeanDefinition beanDefinition =  new RootBeanDefinition("com.legend.entity.Orange");
-
+        /**
+         * RootBeanDefinitionbean将Orange.class/"com.legend.entity.Orange"类型定义bean
+         */
+        BeanDefinition beanDefinition = new RootBeanDefinition("com.legend.entity.Orange");//指定bean的类型
+        beanDefinition.setScope("singleton");//设置作用域
+        beanDefinition.setLazyInit(true);//懒加载
+        beanDefinition.setInitMethodName("OrangeBeanInit");//初始化方法
+        beanDefinition.setDestroyMethodName("OrangeBeanInitDestroy");//销毁方法
         // 注册入BeanDefinitionRegistry("bean定义注册",即容器中)中
-        registry.registerBeanDefinition("myOrange",  beanDefinition); // id ,class
+        registry.registerBeanDefinition("myOrange",  beanDefinition);//id, class;设置bean的id标识名
 
     }
 }

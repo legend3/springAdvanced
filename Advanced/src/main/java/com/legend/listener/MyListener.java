@@ -9,6 +9,6 @@ public class MyListener implements ApplicationListener {
     //方式一(实现接口)：监听对象
     @Override
     public void onApplicationEvent(ApplicationEvent event) {//ctrl+alt+b查看ApplicationEvent的实现事件(能监听的事件)
-        System.out.println("========**********========"+event+"======*********==========");
+        System.out.println("========监听器(方式一)========" + event);
     }
 }
